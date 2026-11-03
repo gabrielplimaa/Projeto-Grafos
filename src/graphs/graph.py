@@ -17,12 +17,26 @@ class Grafo:
 
         self.adjacencia[origem].append([destino, peso])
 
-    def mostrar_vizinhos(self, vertice):
+    def retornar_vizinhos(self, vertice):
         if vertice not in self.adjacencia:
             print("Erro: vértice não existe no grafo")
         else:
             return self.adjacencia[vertice]
 
+    def retornar_vertices(self):
+        lista_vertices = []
+        for vertice in self.adjacencia:
+            lista_vertices.append(vertice)
 
+        return lista_vertices
+
+    def retornar_ligacoes(self):
+        lista_ligacoes = []
+
+        for vertice in self.adjacencia:
+            for adjacencias in self.adjacencia[vertice]:
+                lista_ligacoes.append((vertice, adjacencias[0], adjacencias[1]))
+        
+        return lista_ligacoes
 
 
