@@ -33,31 +33,37 @@ for i in range(len(mapa)):
 for i in range(len(mapa)):
     for j in range(len(mapa[i])):
         if mapa[i][j] != "#":
-            if mapa[i][j] != "G":
+            if mapa[i][j] == "G":
                 continue
+
+            origem = mapa[i][j]
             #verica se pode ir pra cima e se sim, faz a ligação
             if i > 0:
-                simbolo = mapa[i-1][j]
-                if simbolo in custos:
-                    grafo.ligar((i, j), (i-1, j), custos[simbolo])
-
-            #verifica se pode ir pra baixo e se sim, faaz a ligação
-            if 	i < len(mapa) - 1:
-                simbolo = mapa[i+1][j]
-                if simbolo in custos:
-                    grafo.ligar((i, j), (i+1, j), custos[simbolo])
+                if origem not in "<>^v" or origem == "^":
+                    simbolo = mapa[i-1][j]
+                    if simbolo in custos:
+                        grafo.ligar((i, j), (i-1, j), custos[simbolo])
 
             #verifica se pode ir pra direita e se sim, faz a ligação
             if j < len(mapa[i]) - 1:
-                simbolo = mapa[i][j+1]
-                if simbolo in custos:
-                    grafo.ligar((i, j), (i, j+1), custos[simbolo])
+                if origem not in "<>^v" or origem == ">":
+                    simbolo = mapa[i][j+1]
+                    if simbolo in custos:
+                        grafo.ligar((i, j), (i, j+1), custos[simbolo])
+
+            #verifica se pode ir pra baixo e se sim, faz a ligação
+            if 	i < len(mapa) - 1:
+                if origem not in "<>^v" or origem == "v":
+                    simbolo = mapa[i+1][j]
+                    if simbolo in custos:
+                        grafo.ligar((i, j), (i+1, j), custos[simbolo])
 
             #verifica se pode ir pra esquerda e se sim, faz a ligação
             if j > 0:
-                simbolo = mapa[i][j-1]
-                if simbolo in custos:
-                    grafo.ligar((i, j), (i, j-1), custos[simbolo])
+                if origem not in "<>^v" or origem == "<":
+                    simbolo = mapa[i][j-1]
+                    if simbolo in custos:
+                        grafo.ligar((i, j), (i, j-1), custos[simbolo])
 
 
 print(grafo.adjacencia)
