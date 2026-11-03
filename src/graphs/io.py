@@ -40,7 +40,3 @@ def ler_mapa(caminho):
                 return
 
     return linhas
-
-
-
-print(ler_mapa("Projeto-Grafos/data/mapas/m01_terreno.txt"))
