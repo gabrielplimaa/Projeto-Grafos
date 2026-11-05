@@ -62,9 +62,13 @@ while fila:
             novo_chaves = chaves | {simbolo}
         novo = (novo_i, novo_j), novo_chaves
         if novo not in distancia:
-            distancia[novo] = distancia[atual] + 1
+            if simbolo == ",":
+                distancia[novo] = distancia[atual] + 3
+            else:
+                distancia[novo] = distancia[atual] + 1
             pai[novo] = atual
             fila.append(novo)
+            print(distancia[novo], novo)  # [IA] Claude – print temporário de teste (distância e estado alcançado)
 
 # [IA] Claude – print temporário de teste (número de estados alcançáveis)
 print(len(distancia))
