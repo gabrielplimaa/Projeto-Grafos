@@ -1,6 +1,5 @@
 from .io import ler_mapa
 from .graph import Grafo
-from .algorithms import dijkstra
 from collections import deque
 
 custos = {
