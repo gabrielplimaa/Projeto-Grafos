@@ -1,5 +1,6 @@
-from .graph import Grafo
-from .algorithms import dfs
+from graph import Grafo
+from algorithms import dijkstra
+from visualizacao import desenhar_grafo
 
 g = Grafo()
 
@@ -17,5 +18,4 @@ g.ligar("D", "E", 4)
 g.ligar("B", "E", 8)
 g.ligar("E", "F", 1)
 
-print("Resultado da DFS a partir de A")
-print(dfs(g, "A"))
+desenhar_grafo(g)
