@@ -80,7 +80,7 @@ def construir_grafo_estados(mapa):
                 distancia[novo] = distancia[atual] + 1
                 pai[novo] = atual
                 fila.append(novo)
-                print(distancia[novo], novo)
+                #print(distancia[novo], novo)
             grafo.ligar(atual, novo, custos[simbolo])  # [IA] Claude – print temporário de teste (distância e estado alcançado)
     return grafo, inicio
 
@@ -132,13 +132,13 @@ def construir_grafo_posicoes(mapa):
 grafo_posicoes = construir_grafo_posicoes(mapa)
 grafo_estados, inicio = construir_grafo_estados(mapa)
 
-print("\nGRAFO DE POSIÇÕES")
-for vertice, vizinhos in grafo_posicoes.adjacencia.items():
-    print(vertice, "->", vizinhos)
+# print("\nGRAFO DE POSIÇÕES")
+# for vertice, vizinhos in grafo_posicoes.adjacencia.items():
+#     print(vertice, "->", vizinhos)
 
-print("\nGRAFO DE ESTADOS")
-for vertice, vizinhos in grafo_estados.adjacencia.items():
-    print(vertice, "->", vizinhos)
+# print("\nGRAFO DE ESTADOS")
+# for vertice, vizinhos in grafo_estados.adjacencia.items():
+#     print(vertice, "->", vizinhos)
 
 
 
