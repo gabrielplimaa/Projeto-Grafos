@@ -31,7 +31,11 @@ def dijkstra(grafo: Grafo, vertice_origem):
         vizinhos = grafo.retornar_vizinhos(vertice_atual)
         if vizinhos:
             for destino, peso in vizinhos:
-                nova_distancia = distancias[vertice_atual] + peso
+                if peso < 0:
+                    print(f"Erro: arestas com peso negativo (peso {peso}).")
+                    return
+                else: 
+                    nova_distancia = distancias[vertice_atual] + peso
                 if nova_distancia < distancias[destino]:
                     distancias[destino] = nova_distancia
                     antecessores[destino] = vertice_atual
