@@ -1,6 +1,6 @@
 #BFS, DFS, Dijkstra e Bellman-Ford
 
-from graph import Grafo
+from src.graphs.graph import Grafo
 
 def dijkstra(grafo: Grafo, vertice_origem):
     vertices = grafo.retornar_vertices()
