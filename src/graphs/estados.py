@@ -23,9 +23,6 @@ custos = {
     "*": -2,
 }
 
-# [IA] Claude – correção do caminho (barras normais, funciona em qualquer sistema)
-mapa = ler_mapa("data/mapas/m02_uma_chave.txt")
-
 def encontrar_inicio(mapa):
     for i in range(len(mapa)):
         for j in range(len(mapa[i])):
@@ -128,17 +125,21 @@ def construir_grafo_posicoes(mapa):
                             grafo.ligar((i, j), (i, j-1), custos[simbolo])
     return grafo
 
-#[IA] ChatGPT – print temporário de teste (exibição dos grafos construídos)
-grafo_posicoes = construir_grafo_posicoes(mapa)
-grafo_estados, inicio = construir_grafo_estados(mapa)
+if __name__ == "__main__":
+    # [IA] Claude – correção do caminho (barras normais, funciona em qualquer sistema)
+    mapa = ler_mapa("data/mapas/m02_uma_chave.txt")
 
-# print("\nGRAFO DE POSIÇÕES")
-# for vertice, vizinhos in grafo_posicoes.adjacencia.items():
-#     print(vertice, "->", vizinhos)
+    #[IA] ChatGPT – print temporário de teste (exibição dos grafos construídos)
+    grafo_posicoes = construir_grafo_posicoes(mapa)
+    grafo_estados, inicio = construir_grafo_estados(mapa)
 
-# print("\nGRAFO DE ESTADOS")
-# for vertice, vizinhos in grafo_estados.adjacencia.items():
-#     print(vertice, "->", vizinhos)
+    # print("\nGRAFO DE POSIÇÕES")
+    # for vertice, vizinhos in grafo_posicoes.adjacencia.items():
+    #     print(vertice, "->", vizinhos)
+
+    # print("\nGRAFO DE ESTADOS")
+    # for vertice, vizinhos in grafo_estados.adjacencia.items():
+    #     print(vertice, "->", vizinhos)
 
 
 

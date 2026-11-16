@@ -7,15 +7,13 @@ def ler_mapa(caminho):
             linhas.append(linha.rstrip("\r\n"))
 
     if (len(linhas) == 0):
-        print("Erro: Mapa vazio")
-        return
-    
+        raise ValueError("Mapa vazio")
+
     qtd = len(linhas[0])
 
     for linha in linhas:
         if len(linha) != qtd:
-            print("Erro: Mapa não retangular")
-            return
+            raise ValueError("Mapa não retangular")
 
     qtd_inicio = 0
     qtd_saida = 0
@@ -25,18 +23,15 @@ def ler_mapa(caminho):
         qtd_saida += linha.count("G")
 
     if qtd_inicio != 1:
-        print("Erro: O mapa deve ter exatamente 1 início S")
-        return
+        raise ValueError("O mapa deve ter exatamente 1 início S")
 
     if qtd_saida == 0:
-        print("Erro: O mapa deve ter pelo menos uma saída G")
-        return
+        raise ValueError("O mapa deve ter pelo menos uma saída G")
 
     simbolos_permitidos = ["#", ".", "S", "G" ,",", "~", "a", "b", "c", "d", "A", "B", "C", "D", ">", "<", "^", "v", "+", "*"]
     for linha in linhas:
         for char in linha:
             if char not in simbolos_permitidos:
-                print("Há algum caractere não permitido no mapa")
-                return
+                raise ValueError(f"Caractere não permitido no mapa: {char!r}")
 
     return linhas

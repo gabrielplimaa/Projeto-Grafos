@@ -5,23 +5,20 @@ class Grafo:
         }
 
     def adicionar_no(self, vertice):
-        if vertice not in self.adjacencia:
-            self.adjacencia[vertice] = []
-        else:
-            print("Erro: vértice já existe")
+        if vertice in self.adjacencia:
+            raise ValueError(f"Vértice já existe: {vertice}")
+        self.adjacencia[vertice] = []
 
     def ligar(self, origem, destino, peso):
         if origem not in self.adjacencia or destino not in self.adjacencia:
-            print("Erro: Não existe um dos vértices no grafo")
-            return
+            raise ValueError(f"Não existe um dos vértices no grafo: {origem}, {destino}")
 
         self.adjacencia[origem].append([destino, peso])
 
     def retornar_vizinhos(self, vertice):
         if vertice not in self.adjacencia:
-            print("Erro: vértice não existe no grafo")
-        else:
-            return self.adjacencia[vertice]
+            raise ValueError(f"Vértice não existe no grafo: {vertice}")
+        return self.adjacencia[vertice]
 
     def retornar_vertices(self):
         lista_vertices = []

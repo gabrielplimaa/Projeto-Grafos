@@ -1,13 +1,13 @@
 #BFS, DFS, Dijkstra e Bellman-Ford
 
+from collections import deque
 from src.graphs.graph import Grafo
 
 def dijkstra(grafo: Grafo, vertice_origem):
     vertices = grafo.retornar_vertices()
     
     if vertice_origem not in vertices:
-        print("Erro: vértice de origem não existe no grafo")
-        return
+        raise ValueError(f"Vértice de origem não existe no grafo: {vertice_origem}")
 
     distancias = {v: float('inf') for v in vertices}
     distancias[vertice_origem] = 0
@@ -28,17 +28,37 @@ def dijkstra(grafo: Grafo, vertice_origem):
 
         nao_visitados.remove(vertice_atual)
 
-        vizinhos = grafo.retornar_vizinhos(vertice_atual)
-        if vizinhos:
-            for destino, peso in vizinhos:
-                if peso < 0:
-                    print(f"Erro: arestas com peso negativo (peso {peso}).")
-                    return
-                else: 
-                    nova_distancia = distancias[vertice_atual] + peso
-                if nova_distancia < distancias[destino]:
-                    distancias[destino] = nova_distancia
-                    antecessores[destino] = vertice_atual
+        for destino, peso in grafo.retornar_vizinhos(vertice_atual):
+            if peso < 0:
+                raise ValueError(f"Dijkstra não aceita arestas com peso negativo (peso {peso})")
+            nova_distancia = distancias[vertice_atual] + peso
+            if nova_distancia < distancias[destino]:
+                distancias[destino] = nova_distancia
+                antecessores[destino] = vertice_atual
+
+    return distancias, antecessores
+
+
+#IA[Claude]
+def bfs(grafo: Grafo, vertice_origem):
+    vertices = grafo.retornar_vertices()
+
+    if vertice_origem not in vertices:
+        raise ValueError(f"Vértice de origem não existe no grafo: {vertice_origem}")
+
+    distancias = {v: float('inf') for v in vertices}
+    distancias[vertice_origem] = 0
+    antecessores = {v: None for v in vertices}
+    fila = deque([vertice_origem])
+
+    while fila:
+        vertice_atual = fila.popleft()
+
+        for destino, _ in grafo.retornar_vizinhos(vertice_atual):
+            if distancias[destino] == float('inf'):
+                distancias[destino] = distancias[vertice_atual] + 1
+                antecessores[destino] = vertice_atual
+                fila.append(destino)
 
     return distancias, antecessores
 
@@ -48,8 +68,7 @@ def dfs(grafo: Grafo, vertice_origem):
     vertices = grafo.retornar_vertices()
 
     if vertice_origem not in vertices:
-        print("Erro: vértice de origem não existe no grafo")
-        return
+        raise ValueError(f"Vértice de origem não existe no grafo: {vertice_origem}")
 
     contagens = {"arvore": 0, "retorno": 0, "avanco": 0, "cruzamento": 0}
     descoberta = {vertice_origem: 0}

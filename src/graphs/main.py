@@ -1,6 +1,6 @@
 from .io import ler_mapa  # Funciona diretamente se não houver 'from .io'
 from .graph import Grafo
-from .visualizacao import desenhar_grafo
+from src.visualizacao import desenhar_grafo
 from .estados import construir_grafo_estados, construir_grafo_posicoes
 
 # 1. Instanciar o grafo e carregar o mapa
