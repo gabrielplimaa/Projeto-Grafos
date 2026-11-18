@@ -1,7 +1,3 @@
-# ajustar o codigo
-
-
-
 from src.graphs.algorithms import bellman_ford
 from src.graphs.graph import Grafo
 from src.graphs.io import ler_mapa

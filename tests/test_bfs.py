@@ -1,5 +1,3 @@
-# ajustar codigo
-
 from src.graphs.algorithms import bfs
 from src.graphs.graph import Grafo
 from src.graphs.io import ler_mapa
