@@ -107,3 +107,32 @@ def dfs(grafo: Grafo, vertice_origem):
             # Cruzamento: o destino já terminou em outro ramo, explorado antes.
             contagens["cruzamento"] += 1
     return contagens
+
+
+def bellman_ford(grafo: Grafo, vertice_origem):
+    vertices = grafo.retornar_vertices()
+    
+    if vertice_origem not in vertices:
+        raise ValueError(f"Vértice de origem não existe no grafo: {vertice_origem}")
+
+    distancias = {v: float('inf') for v in vertices}
+    distancias[vertice_origem] = 0
+    antecessores = {v: None for v in vertices}
+
+    for v in range(len(vertices)-1):
+        for vertice_atual in vertices:
+
+            for destino, peso in grafo.retornar_vizinhos(vertice_atual):
+                nova_distancia = distancias[vertice_atual] + peso
+                if nova_distancia < distancias[destino]:
+                    distancias[destino] = nova_distancia
+                    antecessores[destino] = vertice_atual
+
+    for vertice_atual in vertices:
+        for destino, peso in grafo.retornar_vizinhos(vertice_atual):
+            nova_distancia = distancias[vertice_atual] + peso
+
+            if nova_distancia < distancias[destino]:    
+                raise ValueError("O grafo contém um ciclo de peso negativo")
+
+    return distancias, antecessores
