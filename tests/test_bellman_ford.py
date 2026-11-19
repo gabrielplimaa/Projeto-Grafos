@@ -8,7 +8,7 @@ from pathlib import Path
 def exportar_resultado_bellman_ford(nome_mapa, arestas_resultado):
     pasta_saida = Path("out/parte1")
     pasta_saida.mkdir(parents=True, exist_ok=True)
-    caminho_arquivo = pasta_saida / f"arestas_{nome_mapa}.csv"
+    caminho_arquivo = pasta_saida / f"graus_{nome_mapa}.csv"
     
     with open(caminho_arquivo, mode='w', newline='', encoding='utf-8') as arquivo_csv:
         writer = csv.writer(arquivo_csv)
@@ -80,7 +80,7 @@ def test_exportacao_bellman_ford():
             
     exportar_resultado_bellman_ford(nome_do_mapa, arestas_caminho)
     
-    ficheiro_exportado = Path(f"out/parte1/arestas_{nome_do_mapa}.csv")
+    ficheiro_exportado = Path(f"out/parte1/graus_{nome_do_mapa}.csv")
     assert ficheiro_exportado.exists()
 
 

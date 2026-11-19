@@ -8,7 +8,7 @@ from pathlib import Path
 def exportar_resultado_bfs(nome_mapa, arestas_resultado):
     pasta_saida = Path("out/parte1")
     pasta_saida.mkdir(parents=True, exist_ok=True)
-    caminho_arquivo = pasta_saida / f"arestas_{nome_mapa}.csv"
+    caminho_arquivo = pasta_saida / f"graus_{nome_mapa}.csv"
     
     with open(caminho_arquivo, mode='w', newline='', encoding='utf-8') as arquivo_csv:
         writer = csv.writer(arquivo_csv)
@@ -74,13 +74,17 @@ def test_exportacao_bfs():
     if distancias[destino] != float('inf'):
         while antecessores[vertice_atual] is not None:
             antecessor = antecessores[vertice_atual]
-            peso_aresta = distancias[vertice_atual] - distancias[antecessor]
+            # Busca o peso real da aresta no grafo em vez de subtrair saltos do BFS
+            peso_aresta = next(
+                peso for vizinho, peso in grafo.retornar_vizinhos(antecessor)
+                if vizinho == vertice_atual
+            )
             arestas_caminho.insert(0, (antecessor, vertice_atual, peso_aresta))
             vertice_atual = antecessor
             
     exportar_resultado_bfs(nome_do_mapa, arestas_caminho)
     
-    ficheiro_exportado = Path(f"out/parte1/arestas_{nome_do_mapa}.csv")
+    ficheiro_exportado = Path(f"out/parte1/graus_{nome_do_mapa}.csv")
     assert ficheiro_exportado.exists()
 
 
