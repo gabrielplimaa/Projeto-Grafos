@@ -21,6 +21,7 @@ custos = {
     "^": 1,
     "v": 1,
     "*": -2,
+    "+": -4,
 }
 
 def encontrar_inicio(mapa):
@@ -40,7 +41,7 @@ direcoes_esteiras = {
 def construir_grafo_estados(mapa):
     grafo = Grafo()
     posicao_inicial = encontrar_inicio(mapa)
-    inicio = (posicao_inicial, frozenset())
+    inicio = (posicao_inicial, frozenset(),frozenset())
     grafo.adicionar_no(inicio)
     # [IA] Claude – correção de sintaxe: deque([...]) em vez de deque[...]
     fila = deque([inicio])
@@ -49,8 +50,8 @@ def construir_grafo_estados(mapa):
     deslocamentos = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
     while fila:
-        (i, j), chaves = fila.popleft()
-        atual = (i, j), chaves
+        atual = fila.popleft()
+        (i, j), chaves, bonus_consumidos = atual
         if mapa[i][j] == "G":
             continue
         for di, dj in deslocamentos:
@@ -71,14 +72,25 @@ def construir_grafo_estados(mapa):
             novo_chaves = chaves
             if simbolo in "abcd":
                 novo_chaves = chaves | {simbolo}
-            novo = (novo_i, novo_j), novo_chaves
+
+            posicao = (novo_i, novo_j)
+            novos_bonus = bonus_consumidos
+            custo = custos[simbolo]
+
+            if simbolo == "+":
+                if posicao in bonus_consumidos:
+                    custo = custos["."]
+                else:
+                    novos_bonus = bonus_consumidos | {posicao}
+
+            novo = (posicao, novo_chaves, novos_bonus)
             if novo not in distancia:
                 grafo.adicionar_no(novo)
                 distancia[novo] = distancia[atual] + 1
                 pai[novo] = atual
                 fila.append(novo)
                 #print(distancia[novo], novo)
-            grafo.ligar(atual, novo, custos[simbolo])  # [IA] Claude – print temporário de teste (distância e estado alcançado)
+            grafo.ligar(atual, novo, custo)  # [IA] Claude – print temporário de teste (distância e estado alcançado)
     return grafo, inicio
 
 # [IA] Claude – print temporário de teste (número de estados alcançáveis)
@@ -130,8 +142,8 @@ if __name__ == "__main__":
     mapa = ler_mapa("data/mapas/m02_uma_chave.txt")
 
     #[IA] ChatGPT – print temporário de teste (exibição dos grafos construídos)
-    grafo_posicoes = construir_grafo_posicoes(mapa)
-    grafo_estados, inicio = construir_grafo_estados(mapa)
+    #grafo_posicoes = construir_grafo_posicoes(mapa)
+    #grafo_estados, inicio = construir_grafo_estados(mapa)
 
     # print("\nGRAFO DE POSIÇÕES")
     # for vertice, vizinhos in grafo_posicoes.adjacencia.items():

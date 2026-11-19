@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<!-- [IA] Claude – template HTML/JS do labirinto interativo (sintaxe de canvas, controles e animação).
+     Os dados (caminhos, custos, status) são gerados pelo código do grupo e injetados por
+     src/labirinto_interativo.py. Este arquivo não calcula nenhum caminho. -->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Labirinto Interativo</title>
+<style>
+  :root { --borda: #d0d4da; --texto: #1f2933; --suave: #616e7c; --fundo: #f7f8fa; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; color: var(--texto); background: var(--fundo); }
+  header { padding: 14px 20px; background: #fff; border-bottom: 1px solid var(--borda); }
+  header h1 { margin: 0 0 10px; font-size: 18px; }
+  .controles { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-size: 14px; }
+  .controles label { display: inline-flex; gap: 6px; align-items: center; }
+  button { font-size: 14px; padding: 4px 10px; border: 1px solid var(--borda); background: #fff; border-radius: 4px; cursor: pointer; }
+  button:hover { background: #eef1f4; }
+  select { font-size: 14px; padding: 3px 6px; }
+  #linha-tempo { width: 260px; }
+  main { display: flex; flex-wrap: wrap; gap: 16px; padding: 16px 20px; }
+  .painel { background: #fff; border: 1px solid var(--borda); border-radius: 6px; padding: 12px; flex: 1 1 420px; min-width: 320px; }
+  .painel h2 { margin: 0 0 6px; font-size: 16px; display: flex; gap: 8px; align-items: center; }
+  .status { font-size: 12px; font-weight: normal; padding: 1px 8px; border-radius: 10px; background: #eef1f4; color: var(--suave); }
+  .mensagem { font-size: 13px; color: var(--suave); margin: 0 0 8px; min-height: 1em; }
+  canvas { display: block; max-width: 100%; }
+  .info { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 13px; margin-top: 10px; }
+  .info dt { color: var(--suave); }
+  .info dd { margin: 0; font-family: ui-monospace, monospace; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; margin-top: 8px; color: var(--suave); }
+  .legenda span::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 4px; vertical-align: -1px; background: var(--c); border-radius: 2px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Labirinto Interativo</h1>
+  <div class="controles">
+    <label>Mapa <select id="sel-mapa"></select></label>
+    <span id="caixas-algoritmos"></span>
+    <span>
+      <button id="btn-inicio" title="Início">⏮</button>
+      <button id="btn-voltar" title="Passo anterior">◀</button>
+      <button id="btn-play" title="Tocar / pausar">▶</button>
+      <button id="btn-avancar" title="Próximo passo">▶|</button>
+      <button id="btn-fim" title="Fim">⏭</button>
+    </span>
+    <label>Passo <input id="linha-tempo" type="range" min="0" max="0" value="0"> <span id="txt-passo">0</span></label>
+    <label>Velocidade <input id="velocidade" type="range" min="1" max="30" value="4"> <span id="txt-vel">4</span> passos/s</label>
+    <label>Camada <select id="sel-camada"></select></label>
+    <label><input type="checkbox" id="chk-armadilhas" checked> Realçar estados-armadilha</label>
+  </div>
+</header>
+<main id="paineis"></main>
+
+<script>
+// [IA] Claude – sintaxe JS do player (estado da animação, desenho no canvas, eventos dos controles).
+
+// ===== CONFIGURAÇÃO VISUAL: definida pelo grupo =====
+// As cores dos terrenos vieram do src/visualizacao.py do grupo.
+// As cores de "+", "*", parede e das camadas são PROVISÓRIAS: o grupo deve escolhê-las e justificar no relatório.
+const CONFIG = {
+  coresTerreno: {
+    "#": "#2d3436", ".": "#ecf0f1", "S": "#2ecc71", "G": "#e74c3c",
+    ",": "#95a5a6", "~": "#3498db",
+    "a": "#f1c40f", "b": "#f1c40f", "c": "#f1c40f", "d": "#f1c40f",
+    "A": "#e67e22", "B": "#e67e22", "C": "#e67e22", "D": "#e67e22",
+    ">": "#dfe6e9", "<": "#dfe6e9", "^": "#dfe6e9", "v": "#dfe6e9",
+    "+": "#a29bfe", "*": "#fd79a8",
+  },
+  // Uma cor por camada (conjunto de chaves), na ordem em que a camada aparece no percurso.
+  coresCamadas: ["#000000", "#555555", "#888888", "#aaaaaa", "#333333", "#777777"],
+  // Realce dos estados-armadilha: hachura + contorno (PROVISÓRIO, o grupo escolhe).
+  corArmadilha: "#2d3436",
+  // Opacidade dos trechos do rastro fora da camada escolhida.
+  opacidadeForaDaCamada: 0.15,
+  tamanhoMaxCelula: 32,
+  tamanhoMinCelula: 6,
+};
+// ====================================================
+
+const DADOS = /*__DADOS__*/null;
+
+const estado = { mapa: null, algoritmos: [], passo: 0, tocando: false, timer: null, camada: "todas" };
+const el = (id) => document.getElementById(id);
+
+function textoChaves(c) { return c && c.length ? c : "-"; }
+// Os bônus já chegam numerados pelo Python (src/labirinto_interativo.py, numerar_bonus),
+// em ordem de leitura, para o rótulo ser o mesmo do arestas_<mapa>.csv.
+function textoBonus(bonus = []) { return "{" + bonus.join(",") + "}"; }
+
+// Todas as camadas (conjuntos de chaves) que aparecem nos percursos e nas armadilhas do mapa.
+function camadasDoMapa(mapa) {
+  const vistas = new Set();
+  for (const exec of Object.values(mapa.execucoes)) {
+    for (const p of [...(exec.passos || []), ...(exec.ciclo || [])]) vistas.add(textoChaves(p.chaves));
+  }
+  for (const a of mapa.armadilhas || []) vistas.add(textoChaves(a.chaves));
+  // Ordena pelo número de chaves e depois em ordem alfabética: -, a, b, ab, abc...
+  return [...vistas].sort((x, y) => (x === "-" ? 0 : x.length) - (y === "-" ? 0 : y.length) || x.localeCompare(y));
+}
+
+function montarSeletorCamadas(mapa) {
+  const sel = el("sel-camada");
+  sel.innerHTML = "";
+  for (const c of ["todas", ...camadasDoMapa(mapa)]) {
+    const op = document.createElement("option");
+    op.value = c;
+    op.textContent = c === "todas" ? "Todas" : c;
+    sel.appendChild(op);
+  }
+  estado.camada = "todas";
+}
+
+const naCamada = (p) => estado.camada === "todas" || textoChaves(p.chaves) === estado.camada;
+
+// Sequência animada de uma execução: o caminho (ok) ou o ciclo negativo, se o grupo o exportou.
+function sequencia(exec) {
+  if (exec.status === "ok") return exec.passos || [];
+  if (exec.status === "ciclo_negativo") return exec.ciclo || [];
+  return [];
+}
+
+function totalPassos() {
+  const mapa = DADOS.mapas[estado.mapa];
+  let maior = 0;
+  for (const alg of estado.algoritmos) {
+    maior = Math.max(maior, sequencia(mapa.execucoes[alg]).length - 1);
+  }
+  return Math.max(maior, 0);
+}
+
+function montarSeletores() {
+  const sel = el("sel-mapa");
+  for (const nome of Object.keys(DADOS.mapas)) {
+    const op = document.createElement("option");
+    op.value = op.textContent = nome;
+    sel.appendChild(op);
+  }
+  sel.addEventListener("change", () => trocarMapa(sel.value));
+  trocarMapa(sel.value);
+}
+
+function trocarMapa(nome) {
+  pausar();
+  estado.mapa = nome;
+  montarSeletorCamadas(DADOS.mapas[nome]);
+  const algs = Object.keys(DADOS.mapas[nome].execucoes);
+  const caixa = el("caixas-algoritmos");
+  caixa.innerHTML = "Algoritmos: ";
+  // Por padrão, só o primeiro algoritmo fica marcado; marcar mais abre painéis lado a lado.
+  estado.algoritmos = algs.slice(0, 1);
+  for (const alg of algs) {
+    const lab = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox"; cb.value = alg; cb.checked = estado.algoritmos.includes(alg);
+    cb.addEventListener("change", () => {
+      estado.algoritmos = [...caixa.querySelectorAll("input:checked")].map((x) => x.value);
+      montarPaineis();
+    });
+    lab.append(cb, " " + alg + " ");
+    caixa.appendChild(lab);
+  }
+  montarPaineis();
+}
+
+function montarPaineis() {
+  const main = el("paineis");
+  main.innerHTML = "";
+  const mapa = DADOS.mapas[estado.mapa];
+  for (const alg of estado.algoritmos) {
+    const exec = mapa.execucoes[alg];
+    const div = document.createElement("section");
+    div.className = "painel";
+    div.innerHTML = `
+      <h2>${alg} <span class="status">${exec.status}</span></h2>
+      <p class="mensagem">${exec.mensagem || ""}</p>
+      <canvas></canvas>
+      <dl class="info">
+        <dt>Passo</dt><dd data-k="passo"></dd>
+        <dt>Estado</dt><dd data-k="rotulo"></dd>
+        <dt>Posição</dt><dd data-k="pos"></dd>
+        <dt>Chaves</dt><dd data-k="chaves"></dd>
+        <dt>Bônus consumidos</dt><dd data-k="bonus"></dd>
+        <dt>Custo acumulado</dt><dd data-k="custo"></dd>
+        <dt>Estado-armadilha?</dt><dd data-k="armadilha"></dd>
+      </dl>
+      <div class="legenda"></div>`;
+    div.dataset.alg = alg;
+    main.appendChild(div);
+  }
+  const linha = el("linha-tempo");
+  linha.max = totalPassos();
+  irPara(Math.min(estado.passo, totalPassos()));
+}
+
+function coresDasCamadas(seq) {
+  const mapaCores = new Map();
+  for (const p of seq) {
+    const k = textoChaves(p.chaves);
+    if (!mapaCores.has(k)) mapaCores.set(k, CONFIG.coresCamadas[mapaCores.size % CONFIG.coresCamadas.length]);
+  }
+  return mapaCores;
+}
+
+function desenharPainel(div) {
+  const mapa = DADOS.mapas[estado.mapa];
+  const exec = mapa.execucoes[div.dataset.alg];
+  const grade = mapa.grade;
+  const linhas = grade.length, colunas = grade[0].length;
+  const canvas = div.querySelector("canvas");
+  const largura = div.clientWidth - 24;
+  const t = Math.max(CONFIG.tamanhoMinCelula, Math.min(CONFIG.tamanhoMaxCelula, Math.floor(largura / colunas)));
+  canvas.width = colunas * t; canvas.height = linhas * t;
+  const ctx = canvas.getContext("2d");
+
+  // 1. Terreno
+  ctx.font = `${Math.floor(t * 0.6)}px ui-monospace, monospace`;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  for (let i = 0; i < linhas; i++) {
+    for (let j = 0; j < colunas; j++) {
+      const s = grade[i][j];
+      ctx.fillStyle = CONFIG.coresTerreno[s] || "#ffffff";
+      ctx.fillRect(j * t, i * t, t, t);
+      if (t >= 14 && s !== "#" && s !== ".") {
+        ctx.fillStyle = "#1f2933";
+        ctx.fillText(s, j * t + t / 2, i * t + t / 2 + 1);
+      }
+    }
+  }
+
+  const seq = sequencia(exec);
+  const k = Math.min(estado.passo, seq.length - 1);
+  const camadas = coresDasCamadas(seq);
+  const centro = (p) => [p.pos[1] * t + t / 2, p.pos[0] * t + t / 2];
+
+  // 2. Estados-armadilha da camada escolhida: uma casa realçada por posição (várias camadas
+  //    podem ter armadilha na mesma casa; com "Todas", basta uma para realçar).
+  const armadilhas = (mapa.armadilhas || []).filter(naCamada);
+  if (el("chk-armadilhas").checked) {
+    const casas = new Set(armadilhas.map((a) => a.pos.join(",")));
+    ctx.save();
+    ctx.strokeStyle = CONFIG.corArmadilha;
+    ctx.lineWidth = 1;
+    for (const casa of casas) {
+      const [i, j] = casa.split(",").map(Number);
+      const x = j * t, y = i * t;
+      ctx.beginPath();
+      ctx.rect(x, y, t, t);
+      ctx.clip();
+      for (let d = -t; d < t; d += Math.max(3, t / 4)) {   // hachura diagonal
+        ctx.moveTo(x + d, y + t); ctx.lineTo(x + d + t, y);
+      }
+      ctx.stroke();
+      ctx.restore(); ctx.save();
+      ctx.strokeStyle = CONFIG.corArmadilha; ctx.lineWidth = 2;
+      ctx.strokeRect(x + 1, y + 1, t - 2, t - 2);            // contorno
+    }
+    ctx.restore();
+  }
+
+  // 3. Rastro do passo 0 até o passo atual, cada trecho com a cor da camada do destino.
+  //    Trechos fora da camada escolhida ficam quase transparentes.
+  ctx.lineWidth = Math.max(2, t / 5);
+  ctx.lineCap = "round";
+  for (let n = 1; n <= k; n++) {
+    const [x0, y0] = centro(seq[n - 1]);
+    const [x1, y1] = centro(seq[n]);
+    ctx.globalAlpha = naCamada(seq[n]) ? 1 : CONFIG.opacidadeForaDaCamada;
+    ctx.strokeStyle = camadas.get(textoChaves(seq[n].chaves));
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  // 4. Posição atual
+  if (k >= 0) {
+    const [x, y] = centro(seq[k]);
+    ctx.fillStyle = "#ffffff"; ctx.strokeStyle = "#1f2933"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x, y, Math.max(3, t * 0.35), 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+  }
+
+  // 5. Painel de informações
+  const p = k >= 0 ? seq[k] : null;
+  const campo = (nome, valor) => { div.querySelector(`[data-k="${nome}"]`).textContent = valor; };
+  const rotulosArmadilha = new Set((mapa.armadilhas || []).map((a) => a.rotulo));
+  campo("passo", p ? `${k} / ${seq.length - 1}` : "—");
+  campo("rotulo", p ? p.rotulo : "—");
+  campo("pos", p ? `(${p.pos[0]}, ${p.pos[1]})` : "—");
+  campo("chaves", p ? textoChaves(p.chaves) : "—");
+  campo("bonus", p ? textoBonus(p.bonus) : "—");
+  campo("custo", p && p.custo !== null && p.custo !== undefined ? p.custo : "—");
+  campo("armadilha", p ? (rotulosArmadilha.has(p.rotulo) ? "sim" : "não") : "—");
+
+  // 6. Legenda: camadas do percurso e estados-armadilha da camada escolhida
+  const itens = [...camadas].map(([chaves, cor]) => `<span style="--c:${cor}">camada ${chaves}</span>`);
+  if (el("chk-armadilhas").checked && (mapa.armadilhas || []).length) {
+    const casas = new Set(armadilhas.map((a) => a.pos.join(","))).size;
+    const qual = estado.camada === "todas" ? "todas as camadas" : `camada ${estado.camada}`;
+    itens.push(`<span style="--c:${CONFIG.corArmadilha}">armadilhas: ${armadilhas.length} estados em ${casas} casas (${qual})</span>`);
+  }
+  div.querySelector(".legenda").innerHTML = itens.join("");
+}
+
+function irPara(n) {
+  estado.passo = Math.max(0, Math.min(n, totalPassos()));
+  el("linha-tempo").value = estado.passo;
+  el("txt-passo").textContent = `${estado.passo} / ${totalPassos()}`;
+  document.querySelectorAll(".painel").forEach(desenharPainel);
+}
+
+function tocar() {
+  if (estado.passo >= totalPassos()) irPara(0);
+  estado.tocando = true;
+  el("btn-play").textContent = "⏸";
+  const intervalo = 1000 / Number(el("velocidade").value);
+  estado.timer = setInterval(() => {
+    if (estado.passo >= totalPassos()) { pausar(); return; }
+    irPara(estado.passo + 1);
+  }, intervalo);
+}
+
+function pausar() {
+  estado.tocando = false;
+  clearInterval(estado.timer);
+  el("btn-play").textContent = "▶";
+}
+
+el("btn-play").addEventListener("click", () => (estado.tocando ? pausar() : tocar()));
+el("btn-inicio").addEventListener("click", () => { pausar(); irPara(0); });
+el("btn-fim").addEventListener("click", () => { pausar(); irPara(totalPassos()); });
+el("btn-voltar").addEventListener("click", () => { pausar(); irPara(estado.passo - 1); });
+el("btn-avancar").addEventListener("click", () => { pausar(); irPara(estado.passo + 1); });
+el("linha-tempo").addEventListener("input", (e) => { pausar(); irPara(Number(e.target.value)); });
+el("velocidade").addEventListener("input", (e) => {
+  el("txt-vel").textContent = e.target.value;
+  if (estado.tocando) { pausar(); tocar(); }
+});
+el("sel-camada").addEventListener("change", (e) => { estado.camada = e.target.value; irPara(estado.passo); });
+el("chk-armadilhas").addEventListener("change", () => irPara(estado.passo));
+window.addEventListener("resize", () => irPara(estado.passo));
+
+if (DADOS) montarSeletores();
+else document.body.insertAdjacentHTML("beforeend", "<p style='padding:20px'>Nenhum dado injetado. Gere este arquivo com src/labirinto_interativo.py.</p>");
+</script>
+</body>
+</html>
