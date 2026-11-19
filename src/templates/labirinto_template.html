@@ -78,8 +78,32 @@ const estado = { mapa: null, algoritmos: [], passo: 0, tocando: false, timer: nu
 const el = (id) => document.getElementById(id);
 
 function textoChaves(c) { return c && c.length ? c : "-"; }
-function textoBonus(b) { return "{" + (b || []).join(",") + "}"; }
-function rotuloPadrao(p) { return `(${p.pos[0]},${p.pos[1]})|${textoChaves(p.chaves)}|${textoBonus(p.bonus)}`; }
+// #[IA] chat gpt 6.2 sol – guarda o número de cada bônus pela sua posição no mapa.
+const numeroBonusPorCasa = new Map();
+
+// #[IA] chat gpt 6.2 sol – numera os sinais de + a partir de zero, lendo cada linha da esquerda para a direita.
+function numerarBonus(grade) {
+  numeroBonusPorCasa.clear();
+  for (let linha = 0; linha < grade.length; linha++) {
+    for (let coluna = 0; coluna < grade[linha].length; coluna++) {
+      if (grade[linha][coluna] === "+") {
+        numeroBonusPorCasa.set(`${linha},${coluna}`, numeroBonusPorCasa.size);
+      }
+    }
+  }
+}
+
+// #[IA] chat gpt 6.2 sol – converte as posições em números e mantém os bônus que já vieram numerados.
+function textoBonus(bonus = []) {
+  const numeros = bonus.map(item => {
+    if (!Array.isArray(item)) return item;
+    const numero = numeroBonusPorCasa.get(item.join(","));
+    if (numero === undefined) throw new Error(`A casa (${item}) não contém um bônus neste mapa.`);
+    return numero;
+  });
+  // #[IA] chat gpt 6.2 sol – mostra os números em ordem crescente entre chaves, por exemplo {0,2}.
+  return "{" + numeros.sort((a, b) => a - b).join(",") + "}";
+}
 
 // Sequência animada de uma execução: o caminho (ok) ou o ciclo negativo, se o grupo o exportou.
 function sequencia(exec) {
@@ -111,6 +135,8 @@ function montarSeletores() {
 function trocarMapa(nome) {
   pausar();
   estado.mapa = nome;
+  // #[IA] chat gpt 6.2 sol – refaz a numeração para o mapa selecionado.
+  numerarBonus(DADOS.mapas[nome].grade);
   const algs = Object.keys(DADOS.mapas[nome].execucoes);
   const caixa = el("caixas-algoritmos");
   caixa.innerHTML = "Algoritmos: ";
@@ -220,10 +246,14 @@ function desenharPainel(div) {
   const p = k >= 0 ? seq[k] : null;
   const campo = (nome, valor) => { div.querySelector(`[data-k="${nome}"]`).textContent = valor; };
   campo("passo", p ? `${k} / ${seq.length - 1}` : "—");
-  campo("rotulo", p ? (p.rotulo || rotuloPadrao(p)) : "—");
+  // #[IA] chat gpt 6.2 sol – prepara a lista de bônus do passo atual para os dois campos do painel.
+  const bonus = p ? textoBonus(p.bonus || []) : "—";
+  // #[IA] chat gpt 6.2 sol – monta o rótulo do estado usando posição, chaves e bônus numerados.
+  campo("rotulo", p ? `(${p.pos[0]},${p.pos[1]})|${textoChaves(p.chaves)}|${bonus}` : "—");
   campo("pos", p ? `(${p.pos[0]}, ${p.pos[1]})` : "—");
   campo("chaves", p ? textoChaves(p.chaves) : "—");
-  campo("bonus", p ? textoBonus(p.bonus) : "—");
+  // #[IA] chat gpt 6.2 sol – exibe a mesma lista no campo Bônus consumidos.
+  campo("bonus", bonus);
   campo("custo", p && p.custo !== null && p.custo !== undefined ? p.custo : "—");
 
   // 5. Legenda das camadas

@@ -24,12 +24,11 @@ def desenhar_grafo(grafo, mapa=None):
         labels_nos = {}
 
         for no in G.nodes():
-            # Trata nós do tipo ((i, j), chaves) ou apenas (i, j)
+            # #[IA] chat gpt 6.2 sol - usa a posicao tanto de um estado com bonus quanto de um no simples.
             if isinstance(no[0], tuple):
-                (i, j), chaves = no
+                i, j = no[0]
             else:
                 i, j = no
-                chaves = None
 
             # Mapeamento de coordenadas (x=coluna, y=-linha) para alinhar a imagem
             pos[no] = (j, -i)
