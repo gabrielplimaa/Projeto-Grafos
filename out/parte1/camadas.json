@@ -1,0 +1,147 @@
+{
+    "m01_terreno": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 24,
+            "tamanho": 46,
+            "densidade": 0.083333
+        }
+    },
+    "m02_uma_chave": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 16,
+            "tamanho": 30,
+            "densidade": 0.125
+        },
+        "a": {
+            "chaves": [
+                "a"
+            ],
+            "ordem": 23,
+            "tamanho": 43,
+            "densidade": 0.08498
+        }
+    },
+    "m03_tres_chaves": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 12,
+            "tamanho": 22,
+            "densidade": 0.166667
+        },
+        "a": {
+            "chaves": [
+                "a"
+            ],
+            "ordem": 53,
+            "tamanho": 114,
+            "densidade": 0.041364
+        },
+        "ab": {
+            "chaves": [
+                "a",
+                "b"
+            ],
+            "ordem": 72,
+            "tamanho": 160,
+            "densidade": 0.031299
+        },
+        "abc": {
+            "chaves": [
+                "a",
+                "b",
+                "c"
+            ],
+            "ordem": 76,
+            "tamanho": 167,
+            "densidade": 0.029298
+        }
+    },
+    "m04_esteiras": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 17,
+            "tamanho": 30,
+            "densidade": 0.110294
+        },
+        "a": {
+            "chaves": [
+                "a"
+            ],
+            "ordem": 20,
+            "tamanho": 35,
+            "densidade": 0.092105
+        }
+    },
+    "m05_bonus": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 215,
+            "tamanho": 438,
+            "densidade": 0.00952
+        }
+    },
+    "m06_fonte": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 24,
+            "tamanho": 46,
+            "densidade": 0.083333
+        }
+    },
+    "m07_impossivel": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 16,
+            "tamanho": 38,
+            "densidade": 0.158333
+        }
+    },
+    "m08_grande": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 165,
+            "tamanho": 356,
+            "densidade": 0.013156
+        },
+        "a": {
+            "chaves": [
+                "a"
+            ],
+            "ordem": 314,
+            "tamanho": 670,
+            "densidade": 0.006817
+        },
+        "ab": {
+            "chaves": [
+                "a",
+                "b"
+            ],
+            "ordem": 442,
+            "tamanho": 940,
+            "densidade": 0.004822
+        },
+        "abc": {
+            "chaves": [
+                "a",
+                "b",
+                "c"
+            ],
+            "ordem": 829,
+            "tamanho": 1818,
+            "densidade": 0.002649
+        },
+        "abcd": {
+            "chaves": [
+                "a",
+                "b",
+                "c",
+                "d"
+            ],
+            "ordem": 1169,
+            "tamanho": 2574,
+            "densidade": 0.001885
+        }
+    }
+}

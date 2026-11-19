@@ -1,0 +1,195 @@
+{
+    "m01_terreno": {
+        "G_pos": {
+            "ordem": 24,
+            "tamanho": 46,
+            "densidade": 0.083333
+        },
+        "G_est": {
+            "ordem": 24,
+            "tamanho": 46,
+            "densidade": 0.083333
+        },
+        "teto_teorico": 24,
+        "taxa_ocupacao": 1.0,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 0,
+            "casas_geradoras": []
+        }
+    },
+    "m02_uma_chave": {
+        "G_pos": {
+            "ordem": 23,
+            "tamanho": 43,
+            "densidade": 0.08498
+        },
+        "G_est": {
+            "ordem": 39,
+            "tamanho": 74,
+            "densidade": 0.049933
+        },
+        "teto_teorico": 46,
+        "taxa_ocupacao": 0.847826,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 1,
+            "casas_geradoras": [
+                {
+                    "linha": 3,
+                    "coluna": 11,
+                    "simbolo": "a"
+                }
+            ]
+        }
+    },
+    "m03_tres_chaves": {
+        "G_pos": {
+            "ordem": 76,
+            "tamanho": 167,
+            "densidade": 0.029298
+        },
+        "G_est": {
+            "ordem": 213,
+            "tamanho": 466,
+            "densidade": 0.01032
+        },
+        "teto_teorico": 608,
+        "taxa_ocupacao": 0.350329,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 3,
+            "casas_geradoras": [
+                {
+                    "linha": 1,
+                    "coluna": 12,
+                    "simbolo": "b"
+                },
+                {
+                    "linha": 6,
+                    "coluna": 6,
+                    "simbolo": "c"
+                },
+                {
+                    "linha": 8,
+                    "coluna": 1,
+                    "simbolo": "a"
+                }
+            ]
+        }
+    },
+    "m04_esteiras": {
+        "G_pos": {
+            "ordem": 24,
+            "tamanho": 39,
+            "densidade": 0.070652
+        },
+        "G_est": {
+            "ordem": 37,
+            "tamanho": 66,
+            "densidade": 0.04955
+        },
+        "teto_teorico": 48,
+        "taxa_ocupacao": 0.770833,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 1,
+            "casas_geradoras": [
+                {
+                    "linha": 3,
+                    "coluna": 11,
+                    "simbolo": "a"
+                }
+            ]
+        }
+    },
+    "m05_bonus": {
+        "G_pos": {
+            "ordem": 44,
+            "tamanho": 90,
+            "densidade": 0.047569
+        },
+        "G_est": {
+            "ordem": 215,
+            "tamanho": 438,
+            "densidade": 0.00952
+        },
+        "teto_teorico": 352,
+        "taxa_ocupacao": 0.610795,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 0,
+            "casas_geradoras": []
+        }
+    },
+    "m06_fonte": {
+        "G_pos": {
+            "ordem": 24,
+            "tamanho": 46,
+            "densidade": 0.083333
+        },
+        "G_est": {
+            "ordem": 24,
+            "tamanho": 46,
+            "densidade": 0.083333
+        },
+        "teto_teorico": 24,
+        "taxa_ocupacao": 1.0,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 0,
+            "casas_geradoras": []
+        }
+    },
+    "m07_impossivel": {
+        "G_pos": {
+            "ordem": 31,
+            "tamanho": 69,
+            "densidade": 0.074194
+        },
+        "G_est": {
+            "ordem": 16,
+            "tamanho": 38,
+            "densidade": 0.158333
+        },
+        "teto_teorico": 62,
+        "taxa_ocupacao": 0.258065,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 0,
+            "casas_geradoras": []
+        }
+    },
+    "m08_grande": {
+        "G_pos": {
+            "ordem": 1169,
+            "tamanho": 2574,
+            "densidade": 0.001885
+        },
+        "G_est": {
+            "ordem": 2919,
+            "tamanho": 6364,
+            "densidade": 0.000747
+        },
+        "teto_teorico": 18704,
+        "taxa_ocupacao": 0.156063,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 6,
+            "casas_geradoras": [
+                {
+                    "linha": 3,
+                    "coluna": 23,
+                    "simbolo": "b"
+                },
+                {
+                    "linha": 3,
+                    "coluna": 29,
+                    "simbolo": "d"
+                },
+                {
+                    "linha": 5,
+                    "coluna": 37,
+                    "simbolo": "c"
+                },
+                {
+                    "linha": 27,
+                    "coluna": 5,
+                    "simbolo": "a"
+                }
+            ]
+        }
+    }
+}
