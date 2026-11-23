@@ -8,7 +8,6 @@ def dijkstra(grafo: Grafo, vertice_origem):
     
     if vertice_origem not in vertices:
         raise ValueError(f"Vértice de origem não existe no grafo: {vertice_origem}")
-
     distancias = {v: float('inf') for v in vertices}
     distancias[vertice_origem] = 0
     antecessores = {v: None for v in vertices}

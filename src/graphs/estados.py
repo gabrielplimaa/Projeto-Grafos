@@ -37,104 +37,104 @@ direcoes_esteiras = {
     "v": (1, 0),
     "<": (0, -1),
 }
+DESLOCAMENTOS = [
+    (-1, 0, "N"),
+    (0, 1, "L"),
+    (1, 0, "S"),
+    (0, -1, "O"),
+]
 
-def construir_grafo_estados(mapa):
+
+def construir_grafo_estados(mapa, fonte_consumivel=False):
     grafo = Grafo()
     posicao_inicial = encontrar_inicio(mapa)
-    inicio = (posicao_inicial, frozenset(),frozenset())
+    inicio = (posicao_inicial, frozenset(), frozenset())
     grafo.adicionar_no(inicio)
+    grafo.adicionar_no("ALVO")
+
     # [IA] Claude – correção de sintaxe: deque([...]) em vez de deque[...]
     fila = deque([inicio])
-    distancia = {inicio: 0}
-    pai = {inicio: None}
-    deslocamentos = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+    visitados = {inicio}
 
     while fila:
         atual = fila.popleft()
-        (i, j), chaves, bonus_consumidos = atual
+        (i, j), chaves, consumidos = atual
+
         if mapa[i][j] == "G":
+            grafo.ligar(atual, "ALVO", 0)
             continue
-        for di, dj in deslocamentos:
-            origem = mapa[i][j]
-            if origem in direcoes_esteiras:
-                if (di, dj) != direcoes_esteiras[origem]:
-                    continue
+
+        origem = mapa[i][j]
+        for di, dj, mov in DESLOCAMENTOS:
+            if origem in direcoes_esteiras and (di, dj) != direcoes_esteiras[origem]:
+                continue
+
             novo_i = i + di
             novo_j = j + dj
-            if novo_i < 0 or novo_i >= len(mapa) or novo_j < 0 or novo_j >= len(mapa[i]):
+            if novo_i < 0 or novo_i >= len(mapa) or novo_j < 0 or novo_j >= len(mapa[novo_i]):
                 continue
+
             simbolo = mapa[novo_i][novo_j]
             # [IA] Claude – usa a variável simbolo em vez de reler o mapa
             if simbolo == "#":
                 continue
             if simbolo in "ABCD" and simbolo.lower() not in chaves:
                 continue
-            novo_chaves = chaves
-            if simbolo in "abcd":
-                novo_chaves = chaves | {simbolo}
 
+            novo_chaves = chaves | {simbolo} if simbolo in "abcd" else chaves
             posicao = (novo_i, novo_j)
-            novos_bonus = bonus_consumidos
+            novos_consumidos = consumidos
             custo = custos[simbolo]
 
             if simbolo == "+":
-                if posicao in bonus_consumidos:
+                if posicao in consumidos:
                     custo = custos["."]
                 else:
-                    novos_bonus = bonus_consumidos | {posicao}
+                    novos_consumidos = consumidos | {posicao}
+            elif simbolo == "*" and fonte_consumivel:
+                if posicao in consumidos:
+                    custo = custos["."]
+                else:
+                    novos_consumidos = consumidos | {posicao}
 
-            novo = (posicao, novo_chaves, novos_bonus)
-            if novo not in distancia:
+            novo = (posicao, novo_chaves, novos_consumidos)
+            if novo not in visitados:
                 grafo.adicionar_no(novo)
-                distancia[novo] = distancia[atual] + 1
-                pai[novo] = atual
+                visitados.add(novo)
                 fila.append(novo)
-                #print(distancia[novo], novo)
-            grafo.ligar(atual, novo, custo)  # [IA] Claude – print temporário de teste (distância e estado alcançado)
+
+            grafo.ligar(atual, novo, custo, movimento=mov)
+
     return grafo, inicio
 
-# [IA] Claude – print temporário de teste (número de estados alcançáveis)
-def construir_grafo_posicoes(mapa):
+
+def construir_grafo_posicoes(mapa, porta_como_parede=False):
     grafo = Grafo()
-    for i in range(len(mapa)):
-        for j in range(len(mapa[i])):
-            if mapa[i][j] != "#":
-                grafo.adicionar_no((i,j))
+    bloqueios = {"#"}
+    if porta_como_parede:
+        bloqueios.update({"A", "B", "C", "D"})
 
     for i in range(len(mapa)):
         for j in range(len(mapa[i])):
-            if mapa[i][j] != "#":
-                if mapa[i][j] == "G":
+            if mapa[i][j] not in bloqueios:
+                grafo.adicionar_no((i, j))
+
+    for i in range(len(mapa)):
+        for j in range(len(mapa[i])):
+            origem = mapa[i][j]
+            if origem in bloqueios or origem == "G":
+                continue
+
+            for di, dj, mov in DESLOCAMENTOS:
+                if origem in direcoes_esteiras and (di, dj) != direcoes_esteiras[origem]:
                     continue
 
-                origem = mapa[i][j]
-                #verica se pode ir pra cima e se sim, faz a ligação
-                if i > 0:   
-                    if origem not in "<>^v" or origem == "^":
-                        simbolo = mapa[i-1][j]
-                        if simbolo in custos:
-                            grafo.ligar((i, j), (i-1, j), custos[simbolo])
+                ni, nj = i + di, j + dj
+                if 0 <= ni < len(mapa) and 0 <= nj < len(mapa[ni]):
+                    simbolo = mapa[ni][nj]
+                    if simbolo not in bloqueios and simbolo in custos:
+                        grafo.ligar((i, j), (ni, nj), custos[simbolo], movimento=mov)
 
-                #verifica se pode ir pra direita e se sim, faz a ligação
-                if j < len(mapa[i]) - 1:
-                    if origem not in "<>^v" or origem == ">":
-                        simbolo = mapa[i][j+1]
-                        if simbolo in custos:
-                            grafo.ligar((i, j), (i, j+1), custos[simbolo])
-
-                #verifica se pode ir pra baixo e se sim, faz a ligação
-                if 	i < len(mapa) - 1:
-                    if origem not in "<>^v" or origem == "v":
-                        simbolo = mapa[i+1][j]
-                        if simbolo in custos:
-                            grafo.ligar((i, j), (i+1, j), custos[simbolo])
-
-                #verifica se pode ir pra esquerda e se sim, faz a ligação
-                if j > 0:
-                    if origem not in "<>^v" or origem == "<":
-                        simbolo = mapa[i][j-1]
-                        if simbolo in custos:
-                            grafo.ligar((i, j), (i, j-1), custos[simbolo])
     return grafo
 
 if __name__ == "__main__":
