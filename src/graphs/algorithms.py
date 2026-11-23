@@ -5,9 +5,16 @@ from src.graphs.graph import Grafo
 
 def dijkstra(grafo: Grafo, vertice_origem):
     vertices = grafo.retornar_vertices()
-    
+
     if vertice_origem not in vertices:
         raise ValueError(f"Vértice de origem não existe no grafo: {vertice_origem}")
+
+    # Verifica TODOS os arcos do grafo antes de iniciar a busca
+    for u in vertices:
+        for destino, peso in grafo.retornar_vizinhos(u):
+            if peso < 0:
+                raise ValueError(f"Dijkstra não aceita arestas com peso negativo (peso {peso})")
+
     distancias = {v: float('inf') for v in vertices}
     distancias[vertice_origem] = 0
     antecessores = {v: None for v in vertices}

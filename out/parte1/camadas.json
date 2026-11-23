@@ -143,5 +143,73 @@
             "tamanho": 2574,
             "densidade": 0.001885
         }
+    },
+    "m01_grupo": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 4,
+            "tamanho": 6,
+            "densidade": 0.5
+        },
+        "a": {
+            "chaves": [
+                "a"
+            ],
+            "ordem": 15,
+            "tamanho": 27,
+            "densidade": 0.128571
+        },
+        "b": {
+            "chaves": [
+                "b"
+            ],
+            "ordem": 22,
+            "tamanho": 41,
+            "densidade": 0.088745
+        },
+        "ab": {
+            "chaves": [
+                "a",
+                "b"
+            ],
+            "ordem": 47,
+            "tamanho": 92,
+            "densidade": 0.042553
+        },
+        "bc": {
+            "chaves": [
+                "b",
+                "c"
+            ],
+            "ordem": 45,
+            "tamanho": 82,
+            "densidade": 0.041414
+        },
+        "abc": {
+            "chaves": [
+                "a",
+                "b",
+                "c"
+            ],
+            "ordem": 63,
+            "tamanho": 124,
+            "densidade": 0.031746
+        }
+    },
+    "m02_grupo": {
+        "sem_chaves": {
+            "chaves": [],
+            "ordem": 10,
+            "tamanho": 13,
+            "densidade": 0.144444
+        },
+        "a": {
+            "chaves": [
+                "a"
+            ],
+            "ordem": 16,
+            "tamanho": 25,
+            "densidade": 0.104167
+        }
     }
 }

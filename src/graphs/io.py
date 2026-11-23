@@ -1,16 +1,18 @@
 def ler_mapa(caminho):
     linhas = []
-    with open (caminho, "r", encoding="utf-8") as file:
+    with open(caminho, "r", encoding="utf-8") as file:
         for linha in file:
             if linha.startswith(";"):
                 continue
             linhas.append(linha.rstrip("\r\n"))
 
-    if (len(linhas) == 0):
+    while linhas and linhas[-1].strip() == "":
+        linhas.pop()
+
+    if len(linhas) == 0:
         raise ValueError("Mapa vazio")
 
     qtd = len(linhas[0])
-
     for linha in linhas:
         if len(linha) != qtd:
             raise ValueError("Mapa não retangular")

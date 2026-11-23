@@ -37,9 +37,14 @@ Uso (exemplo do formato esperado):
 
 # [IA] Claude – sintaxe de IO: conversão dos estados para JSON, numeração dos bônus
 # para o rótulo e injeção no template HTML.
-
 import json
 from pathlib import Path
+from src.graphs.estados import (
+    numerar_bonus,
+    rotulo,
+    _desmontar_estado as _desmontar,
+    _numeros_dos_bonus,
+)
 
 PASTA = Path(__file__).resolve().parent
 TEMPLATE = PASTA / "templates" / "labirinto_template.html"
@@ -58,61 +63,8 @@ def _numero_json(valor):
     return valor
 
 
-def numerar_bonus(grade):
-    """Dá um número a cada casa "+": 0, 1, 2... em ordem de leitura (linha, depois coluna)."""
-    numeros = {}
-    for i, linha in enumerate(grade):
-        for j, simbolo in enumerate(linha):
-            if simbolo == "+":
-                numeros[(i, j)] = len(numeros)
-    return numeros
-
-
-def _desmontar(estado):
-    if len(estado) == 3:
-        pos, chaves, bonus = estado
-    elif len(estado) == 2:
-        pos, chaves = estado
-        bonus = ()
-    else:
-        raise ValueError(f"Estado em formato inesperado: {estado!r}")
-    return pos, chaves, bonus
-
-
-def _numeros_dos_bonus(bonus, numeros):
-    """Converte cada bônus para o seu número. Aceita posição (i, j) ou número já pronto."""
-    resultado = []
-    for b in bonus:
-        if isinstance(b, int):
-            resultado.append(b)
-            continue
-        posicao = (int(b[0]), int(b[1]))
-        if numeros is None:
-            raise ValueError("Bônus dado por posição: passe a grade para numerá-lo")
-        if posicao not in numeros:
-            raise ValueError(f"A casa {posicao} não é um bônus '+' neste mapa")
-        resultado.append(numeros[posicao])
-    return sorted(resultado)
-
-
-def rotulo(estado, grade=None):
-    """Rótulo no formato do enunciado: (linha,coluna)|chaves|{bônus}.
-
-    Se os bônus do estado forem posições (i, j), passe a grade do mapa para numerá-los.
-    """
-    pos, chaves, bonus = _desmontar(estado)
-    numeros = numerar_bonus(grade) if grade is not None else None
-    lista = _numeros_dos_bonus(bonus, numeros)
-    texto_chaves = _texto_chaves(chaves) or "-"
-    texto_bonus = "{" + ",".join(str(b) for b in lista) + "}"
-    return f"({pos[0]},{pos[1]})|{texto_chaves}|{texto_bonus}"
-
-
 def passo(estado, custo):
-    """Converte um estado do grafo do grupo em um passo do player.
-
-    Os bônus ficam como vieram (posições ou números); gerar_html os numera usando a grade.
-    """
+    """Converte um estado do grafo do grupo em um passo do player."""
     pos, chaves, bonus = _desmontar(estado)
     return {
         "pos": [int(pos[0]), int(pos[1])],
@@ -120,7 +72,6 @@ def passo(estado, custo):
         "bonus": [b if isinstance(b, int) else [int(b[0]), int(b[1])] for b in bonus],
         "custo": _numero_json(custo),
     }
-
 
 def _lista_de_passos(estados, custos):
     if custos is None:

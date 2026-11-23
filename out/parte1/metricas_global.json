@@ -191,5 +191,63 @@
                 }
             ]
         }
+    },
+    "m01_grupo": {
+        "G_pos": {
+            "ordem": 32,
+            "tamanho": 63,
+            "densidade": 0.063508
+        },
+        "G_est": {
+            "ordem": 196,
+            "tamanho": 383,
+            "densidade": 0.010021
+        },
+        "teto_teorico": 512,
+        "taxa_ocupacao": 0.382812,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 11,
+            "casas_geradoras": [
+                {
+                    "linha": 1,
+                    "coluna": 4,
+                    "simbolo": "a"
+                },
+                {
+                    "linha": 3,
+                    "coluna": 1,
+                    "simbolo": "b"
+                },
+                {
+                    "linha": 5,
+                    "coluna": 1,
+                    "simbolo": "c"
+                }
+            ]
+        }
+    },
+    "m02_grupo": {
+        "G_pos": {
+            "ordem": 25,
+            "tamanho": 44,
+            "densidade": 0.073333
+        },
+        "G_est": {
+            "ordem": 26,
+            "tamanho": 39,
+            "densidade": 0.06
+        },
+        "teto_teorico": 50,
+        "taxa_ocupacao": 0.52,
+        "arcos_entre_camadas": {
+            "quantidade_arcos": 1,
+            "casas_geradoras": [
+                {
+                    "linha": 1,
+                    "coluna": 4,
+                    "simbolo": "a"
+                }
+            ]
+        }
     }
 }
