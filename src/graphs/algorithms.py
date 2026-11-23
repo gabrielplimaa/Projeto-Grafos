@@ -125,8 +125,10 @@ def bellman_ford(grafo: Grafo, vertice_origem):
     distancias[vertice_origem] = 0
     antecessores = {v: None for v in vertices}
 
-    for v in range(len(vertices)-1):
+    for i in range(len(vertices)-1):
         for vertice_atual in vertices:
+            if distancias[vertice_atual] == float('inf'):
+                continue
 
             for destino, peso in grafo.retornar_vizinhos(vertice_atual):
                 nova_distancia = distancias[vertice_atual] + peso
@@ -135,10 +137,49 @@ def bellman_ford(grafo: Grafo, vertice_origem):
                     antecessores[destino] = vertice_atual
 
     for vertice_atual in vertices:
+        if distancias[vertice_atual] == float('inf'):
+            continue
+
         for destino, peso in grafo.retornar_vizinhos(vertice_atual):
             nova_distancia = distancias[vertice_atual] + peso
 
-            if nova_distancia < distancias[destino]:    
-                raise ValueError("O grafo contém um ciclo de peso negativo")
+            if nova_distancia < distancias[destino]:
+                antecessores[destino] = vertice_atual
+                x = destino
 
-    return distancias, antecessores
+                for i in range(len(vertices)):
+                    x = antecessores[x]
+
+                ciclo = [x]
+                atual = antecessores[x]
+                while atual != x:
+                    ciclo.append(atual)
+                    atual = antecessores[atual]
+                ciclo.append(x)
+                ciclo.reverse()
+
+                custo_ciclo = 0
+                for i in range(len(ciclo) - 1):
+                    u = ciclo[i]
+                    v = ciclo[i + 1]
+                    menor_peso = float('inf')
+                    for d, p in grafo.retornar_vizinhos(u):
+                        if d == v and p < menor_peso:
+                            menor_peso = p
+                    custo_ciclo += menor_peso
+
+                return {
+                    "tem_ciclo_negativo": True,
+                    "distancias": distancias,
+                    "antecessores": antecessores,
+                    "ciclo": ciclo,
+                    "custo_ciclo": custo_ciclo,
+                }
+
+    return {
+        "tem_ciclo_negativo": False,
+        "distancias": distancias,
+        "antecessores": antecessores,
+        "ciclo": None,
+        "custo_ciclo": None,
+    }
