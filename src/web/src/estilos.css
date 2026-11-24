@@ -1,0 +1,217 @@
+/* [IA] Claude – estilos do player. Interface monocromática (tinta azul-escura sobre papel frio)
+   para as cores de dados (terreno e camadas, escolhidas pelo grupo) serem as únicas cores fortes. */
+
+:root {
+  --papel: #F5F7FA;
+  --superficie: #FFFFFF;
+  --tinta: #1D2B3A;
+  --grafite: #5C6B7B;
+  --linha: #DDE3EA;
+  --linha-forte: #C5CED8;
+  --ok: #2E7D5B;
+  --recusado: #A86400;
+  --ciclo: #B71C1C;
+  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+  --grade: rgba(29, 43, 58, 0.035);
+  --fundo-lateral: rgba(255, 255, 255, 0.6);
+  --fundo-barra: rgba(255, 255, 255, 0.94);
+  --sobre-tinta: #FFFFFF;           /* texto em cima de um fundo cor de tinta */
+  color-scheme: light;
+}
+
+/* Modo escuro: a mesma ideia invertida, ardósia azulada em vez de papel.
+   O mapa e as cores das camadas não mudam: são as cores de dados escolhidas pelo grupo. */
+:root[data-tema="escuro"] {
+  --papel: #121A23;
+  --superficie: #19232E;
+  --tinta: #E4EAF0;
+  --grafite: #98A6B4;
+  --linha: #283442;
+  --linha-forte: #3A4858;
+  --ok: #63C397;
+  --recusado: #E2A44B;
+  --ciclo: #F07070;
+  --grade: rgba(228, 234, 240, 0.035);
+  --fundo-lateral: rgba(25, 35, 46, 0.6);
+  --fundo-barra: rgba(25, 35, 46, 0.94);
+  --sobre-tinta: #121A23;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: var(--fonte);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--tinta);
+  background-color: var(--papel);
+  /* papel quadriculado bem leve: o labirinto é uma grade */
+  background-image:
+    linear-gradient(var(--grade) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grade) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+h1, h2, h3, p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--tinta); outline-offset: 2px; border-radius: 4px; }
+.rotulo-oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ---------- estrutura ---------- */
+.pagina { min-height: 100vh; display: flex; flex-direction: column; }
+.topo {
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  padding: 18px 28px; border-bottom: 1px solid var(--linha); background: var(--superficie);
+}
+.topo h1 { font-size: 20px; font-weight: 650; letter-spacing: -0.01em; }
+.topo-resumo { color: var(--grafite); font-size: 14px; margin-left: auto; }
+.seletor-mapa { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--grafite); }
+select {
+  padding: 7px 34px 7px 12px; border: 1px solid var(--linha-forte); border-radius: 8px; background: var(--superficie);
+  color: var(--tinta); font-weight: 550; cursor: pointer; appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--grafite) 50%), linear-gradient(135deg, var(--grafite) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%; background-size: 5px 5px; background-repeat: no-repeat;
+}
+
+.corpo { flex: 1; display: grid; grid-template-columns: 272px 1fr; min-height: 0; }
+
+/* ---------- coluna de controles ---------- */
+.lateral { padding: 22px 24px 120px; border-right: 1px solid var(--linha); background: var(--fundo-lateral); }
+.grupo + .grupo { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--linha); }
+.grupo h3 { font-size: 14px; font-weight: 650; }
+.dica { color: var(--grafite); font-size: 13px; margin-top: 2px; }
+
+.lista-algoritmos { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
+.algoritmo {
+  display: flex; gap: 10px; align-items: flex-start; padding: 9px 10px; border-radius: 8px; cursor: pointer;
+  border: 1px solid transparent;
+}
+.algoritmo:hover { background: var(--papel); }
+.algoritmo:has(input:checked) { border-color: var(--linha-forte); background: var(--superficie); }
+.algoritmo input { margin-top: 4px; accent-color: var(--tinta); }
+.algoritmo-texto { display: grid; }
+.algoritmo-nome { font-weight: 600; display: flex; align-items: center; gap: 7px; }
+.algoritmo-resumo { color: var(--grafite); font-size: 13px; }
+.ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--grafite); }
+.ponto.ok { background: var(--ok); }
+.ponto.recusado { background: var(--recusado); }
+.ponto.ciclo { background: var(--ciclo); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 999px;
+  border: 1px solid var(--linha-forte); background: var(--superficie); cursor: pointer; font-size: 13px;
+}
+.chip:hover { border-color: var(--grafite); }
+.chip.ativo { background: var(--tinta); border-color: var(--tinta); color: var(--sobre-tinta); }
+.amostra { width: 11px; height: 11px; border-radius: 3px; flex: none; box-shadow: inset 0 0 0 1px var(--linha-forte); }
+.amostra.hachura {
+  background: repeating-linear-gradient(135deg, #B71C1C 0 1.5px, transparent 1.5px 4px); box-shadow: inset 0 0 0 1.5px #B71C1C;
+}
+
+.interruptor { display: flex; align-items: center; gap: 9px; margin-top: 10px; cursor: pointer; font-size: 14px; }
+.interruptor input { accent-color: var(--tinta); width: 16px; height: 16px; }
+
+.legenda { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 13px; color: var(--grafite); }
+.legenda li { display: flex; align-items: center; gap: 7px; }
+
+/* ---------- painéis dos algoritmos ---------- */
+.paineis {
+  padding: 24px 28px 130px; display: grid; gap: 22px; align-content: start;
+  grid-template-columns: minmax(0, 860px);
+}
+.paineis.varios { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+.painel { background: var(--superficie); border: 1px solid var(--linha); border-radius: 12px; padding: 18px 20px 20px; min-width: 0; }
+.painel-topo { display: flex; align-items: center; gap: 12px; }
+.painel-topo h2 { font-size: 17px; font-weight: 650; }
+.status { font-size: 12.5px; padding: 2px 10px; border-radius: 999px; background: var(--papel); color: var(--grafite); border: 1px solid var(--linha); }
+.status.ok { color: var(--ok); border-color: rgba(46, 125, 91, 0.35); background: rgba(46, 125, 91, 0.07); }
+.status.recusado { color: var(--recusado); border-color: rgba(168, 100, 0, 0.35); background: rgba(168, 100, 0, 0.07); }
+.status.ciclo { color: var(--ciclo); border-color: rgba(183, 28, 28, 0.35); background: rgba(183, 28, 28, 0.06); }
+.painel-mensagem { color: var(--grafite); font-size: 13.5px; margin-top: 6px; }
+.painel-vazio { color: var(--grafite); font-size: 14px; margin-top: 14px; max-width: 60ch; }
+
+.mapa { margin-top: 14px; width: 100%; }
+.mapa canvas { display: block; border-radius: 6px; max-width: 100%; }
+
+/* trilha de estados: o elemento marcante do player.
+   Os segmentos ficam numa grade que divide a largura do painel, então a trilha nunca transborda. */
+.trilha { margin-top: 12px; min-width: 0; }
+.trilha-marcas { position: relative; height: 18px; }
+.trilha-marca {
+  position: absolute; bottom: 3px; white-space: nowrap; font-size: 12px; line-height: 1.1;
+  color: var(--tinta); border-left: 1.5px solid var(--tinta); padding-left: 4px;
+}
+.trilha-faixa { display: grid; gap: 2px; height: 14px; min-width: 0; }
+.trilha-faixa.densa { gap: 0; }
+.trilha-passo {
+  min-width: 0; width: 100%; padding: 0; border: 0; border-radius: 2px; cursor: pointer; position: relative;
+  background: var(--cor);
+}
+.trilha-faixa.densa .trilha-passo { border-radius: 0; }
+/* a transparência vai só no fundo, para a cor continuar reconhecível */
+.trilha-passo.futuro { background: color-mix(in srgb, var(--cor) 22%, transparent); }
+.trilha-passo.apagado { background: color-mix(in srgb, var(--cor) 12%, transparent); }
+.trilha-passo.atual { outline: 2px solid var(--tinta); outline-offset: 1px; z-index: 1; }
+.trilha-faixa.densa .trilha-passo.atual { outline-width: 2px; outline-offset: 0; box-shadow: 0 0 0 1px var(--superficie); }
+
+.leitura { margin-top: 16px; display: grid; gap: 12px; }
+.leitura-estado { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.leitura-nome { color: var(--grafite); font-size: 13px; }
+.leitura-estado code { font-family: var(--mono); font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+.leitura dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px 18px; }
+.leitura dl div { border-top: 1px solid var(--linha); padding-top: 7px; }
+.leitura dt { color: var(--grafite); font-size: 12.5px; }
+.leitura dd { margin: 1px 0 0; font-size: 15px; font-weight: 550; font-variant-numeric: tabular-nums; }
+.chip-camada { display: inline-flex; align-items: center; gap: 6px; }
+.chip-camada::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--cor); }
+
+/* ---------- barra de reprodução ---------- */
+.transporte {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  padding: 12px 28px; background: var(--fundo-barra); border-top: 1px solid var(--linha);
+  backdrop-filter: blur(6px);
+}
+.botoes { display: flex; gap: 4px; }
+.botoes button {
+  width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--linha-forte);
+  background: var(--superficie); border-radius: 8px; cursor: pointer;
+}
+.botoes button:hover { border-color: var(--tinta); }
+.botoes button.principal { width: 44px; background: var(--tinta); border-color: var(--tinta); color: var(--sobre-tinta); }
+.linha-tempo { flex: 1; min-width: 220px; display: flex; align-items: center; gap: 12px; }
+.linha-tempo input { flex: 1; }
+.velocidade { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--grafite); }
+.velocidade input { width: 120px; }
+.contador { font-size: 13px; color: var(--grafite); font-variant-numeric: tabular-nums; white-space: nowrap; min-width: 86px; }
+input[type="range"] { accent-color: var(--tinta); }
+.atalhos { width: 100%; font-size: 12px; color: var(--grafite); margin-top: -4px; }
+
+/* ---------- sem dados ---------- */
+.sem-dados { max-width: 640px; margin: 12vh auto; padding: 0 24px; display: grid; gap: 12px; }
+.sem-dados code { font-family: var(--mono); background: var(--superficie); border: 1px solid var(--linha); padding: 10px 14px; border-radius: 8px; }
+
+/* ---------- telas estreitas ---------- */
+@media (max-width: 900px) {
+  .corpo { grid-template-columns: 1fr; }
+  .lateral { border-right: 0; border-bottom: 1px solid var(--linha); padding-bottom: 22px; }
+  .paineis, .paineis.varios { grid-template-columns: 1fr; padding: 18px 16px 170px; }
+  .topo { padding: 14px 16px; }
+  .topo-resumo { margin-left: 0; width: 100%; }
+  .transporte { padding: 10px 16px; gap: 12px; }
+  .atalhos { display: none; }
+}
+/* ---------- botão de tema e transição entre os modos ---------- */
+.botao-tema {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; font-size: 13.5px;
+  border: 1px solid var(--linha-forte); border-radius: 8px; background: var(--superficie); cursor: pointer;
+}
+.botao-tema:hover { border-color: var(--tinta); }
+body, .topo, .lateral, .painel, .transporte, .chip, .status, select, .botoes button, .botao-tema, .algoritmo {
+  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}

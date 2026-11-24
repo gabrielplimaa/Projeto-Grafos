@@ -1,0 +1,16 @@
+{
+  "name": "labirinto-interativo",
+  "private": true,
+  "type": "module",
+  "description": "Código-fonte (React) do player do labirinto interativo. O build gera src/templates/labirinto_template.html.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}
