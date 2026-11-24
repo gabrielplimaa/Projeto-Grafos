@@ -108,6 +108,11 @@ COR_PAREDE_HEATMAP = "#ffffff"       # PROVISÓRIO
 DPI = 150
 
 
+def _estados_reais(grafo):
+    """Vértices do grafo sem o nó virtual ALVO, que não tem casa no mapa."""
+    return [v for v in grafo.retornar_vertices() if v != "ALVO"]
+
+
 def _partes(estado):
     """Aceita ((i, j), chaves) ou ((i, j), chaves, bonus)."""
     pos, chaves = estado[0], estado[1]
@@ -203,7 +208,7 @@ def desenhar_camadas(grafo, mapa, saida, titulo):
     mudam de camada são destacados.
     """
     linhas = len(mapa)
-    estados = grafo.retornar_vertices()
+    estados = _estados_reais(grafo)
     camadas = _ordenar_camadas({_texto_chaves(_partes(e)[1]) for e in estados})
     faixa = {c: k for k, c in enumerate(camadas)}
     altura_faixa = linhas + 2
@@ -221,6 +226,8 @@ def desenhar_camadas(grafo, mapa, saida, titulo):
     G.add_nodes_from(estados)
     dentro, entre = [], []
     for origem, destino, _peso in grafo.retornar_ligacoes():
+        if origem == "ALVO" or destino == "ALVO":
+            continue
         G.add_edge(origem, destino)
         mesma = _texto_chaves(_partes(origem)[1]) == _texto_chaves(_partes(destino)[1])
         (dentro if mesma else entre).append((origem, destino))
@@ -254,7 +261,8 @@ def desenhar_arvore_bfs(grafo, mapa, distancias, antecessores, saida, titulo):
 
     distancias e antecessores vêm da bfs() do grupo; o nível de um estado é a sua distância.
     """
-    alcancados = [e for e in grafo.retornar_vertices() if distancias[e] != float("inf")]
+    # O ALVO fica fora do desenho: ele não tem casa no mapa (é só o fim de todo caminho).
+    alcancados = [e for e in _estados_reais(grafo) if distancias[e] != float("inf")]
     niveis = {}
     for e in alcancados:
         niveis.setdefault(distancias[e], []).append(e)
@@ -299,7 +307,7 @@ def desenhar_heatmap_multiplicidade(grafo, mapa, saida, titulo):
     """Número de estados do grafo de estados em cada casa do mapa (multiplicidade)."""
     linhas, colunas = len(mapa), len(mapa[0])
     contagem = np.zeros((linhas, colunas))
-    for e in grafo.retornar_vertices():
+    for e in _estados_reais(grafo):
         i, j = _partes(e)[0]
         contagem[i, j] += 1
     paredes = np.array([[s == "#" for s in linha] for linha in mapa])

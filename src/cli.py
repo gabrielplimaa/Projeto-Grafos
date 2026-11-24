@@ -36,6 +36,9 @@ ALGORITMOS = {"BFS": bfs, "Dijkstra": dijkstra, "Bellman-Ford": bellman_ford}
 def estado_final(grafo, mapa, distancias):
     melhor = None
     for estado in grafo.retornar_vertices():
+        # [IA] Claude – depuração: o nó virtual ALVO não tem posição no mapa, então é pulado
+        if estado == "ALVO":
+            continue
         (i, j) = estado[0]
         if mapa[i][j] == "G" and distancias[estado] != float('inf'):
             if melhor is None or distancias[estado] < distancias[melhor]:
@@ -75,14 +78,21 @@ def estados_armadilha(grafo, inicio):
 def _executar(funcao, grafo, inicio, mapa):
     """Roda um algoritmo e converte o resultado (ou o erro) no formato do player."""
     try:
-        distancias, antecessores = funcao(grafo, inicio)
+        resultado = funcao(grafo, inicio)
     except ValueError as erro:
-        mensagem = str(erro)
-        # Os algoritmos do grupo sinalizam recusa e ciclo negativo com ValueError;
-        # a mensagem diferencia os dois casos.
-        if "ciclo" in mensagem.lower():
-            return execucao_status("ciclo_negativo", mensagem)
-        return execucao_status("recusado", mensagem)
+        # O Dijkstra do grupo recusa peso negativo com ValueError.
+        return execucao_status("recusado", str(erro))
+
+    # O Bellman-Ford do grupo devolve um dicionário; BFS e Dijkstra, uma tupla.
+    if isinstance(resultado, dict):
+        if resultado["tem_ciclo_negativo"]:
+            ciclo = resultado["ciclo"]
+            mensagem = f"Ciclo negativo de custo {resultado['custo_ciclo']} com {len(ciclo) - 1} arcos"
+            return execucao_status("ciclo_negativo", mensagem, ciclo=ciclo,
+                                   custos_ciclo=custos_acumulados(grafo, ciclo))
+        distancias, antecessores = resultado["distancias"], resultado["antecessores"]
+    else:
+        distancias, antecessores = resultado
 
     destino = estado_final(grafo, mapa, distancias)
     if destino is None:
@@ -124,7 +134,10 @@ def _caminho_menor_custo(grafo, inicio, mapa):
     try:
         distancias, antecessores = dijkstra(grafo, inicio)
     except ValueError:
-        distancias, antecessores = bellman_ford(grafo, inicio)
+        resultado = bellman_ford(grafo, inicio)
+        if resultado["tem_ciclo_negativo"]:
+            return []
+        distancias, antecessores = resultado["distancias"], resultado["antecessores"]
     destino = estado_final(grafo, mapa, distancias)
     return reconstruir_caminho(antecessores, destino) if destino is not None else []
 
