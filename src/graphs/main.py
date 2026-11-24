@@ -88,6 +88,45 @@ def calcular_camadas_e_transicoes(grafo_estados, mapa: list[str]) -> tuple[dict,
     return metricas_camadas, info_arcos_entre_camadas
 
 
+def calcular_graus_e_rankings(grafo_estados, mapa: list[str], bonus_idx: dict) -> dict:
+    # [IA] Claude (Anthropic) – Seção 4: maiores graus, becos e multiplicidade das casas
+    vertices = [v for v in grafo_estados.retornar_vertices() if v != "ALVO"]
+    grau_entrada = {v: 0 for v in vertices}
+    grau_saida = {v: 0 for v in vertices}
+    for origem, destino, _peso in grafo_estados.retornar_ligacoes():
+        if origem != "ALVO" and destino != "ALVO":
+            grau_saida[origem] += 1
+            grau_entrada[destino] += 1
+
+    def ordem_de_leitura(estado):
+        (i, j), _chaves, _bonus = estado
+        return (i, j, formatar_estado(estado, bonus_idx))
+
+    maior_saida = min(vertices, key=lambda v: (-grau_saida[v], ordem_de_leitura(v)))
+    maior_entrada = min(vertices, key=lambda v: (-grau_entrada[v], ordem_de_leitura(v)))
+
+    becos = sorted(
+        (v for v in vertices if grau_saida[v] == 0 and mapa[v[0][0]][v[0][1]] != "G"),
+        key=ordem_de_leitura,
+    )
+
+    multiplicidade = {}
+    for (i, j), _chaves, _bonus in vertices:
+        multiplicidade[(i, j)] = multiplicidade.get((i, j), 0) + 1
+    maxima = max(multiplicidade.values())
+    casas_maximas = sorted(casa for casa, qtd in multiplicidade.items() if qtd == maxima)
+
+    return {
+        "maior_grau_saida": {"estado": formatar_estado(maior_saida, bonus_idx), "grau": grau_saida[maior_saida]},
+        "maior_grau_entrada": {"estado": formatar_estado(maior_entrada, bonus_idx), "grau": grau_entrada[maior_entrada]},
+        "becos": [formatar_estado(v, bonus_idx) for v in becos],
+        "multiplicidade": {
+            "maxima": maxima,
+            "qtd_casas_com_maxima": len(casas_maximas),
+            "casas_com_maxima": [{"linha": i, "coluna": j, "simbolo": mapa[i][j]} for i, j in casas_maximas],
+        },
+    }
+
 def exportar_graus_csv(nome_mapa: str, grafo_estados, bonus_idx: dict, pasta_saida: Path) -> None:
     vertices = [v for v in grafo_estados.retornar_vertices() if v != "ALVO"]
     arcos = [
@@ -191,6 +230,7 @@ def gerar_relatorios(pasta_saida="out/parte1") -> None:
             "teto_teorico": teto_teorico,
             "taxa_ocupacao": round(taxa_ocupacao, 6),
             "arcos_entre_camadas": info_transicoes,
+            "graus_e_rankings": calcular_graus_e_rankings(g_est, mapa, bonus_idx),
         }
 
         camadas_todos[nome_mapa] = metricas_camadas

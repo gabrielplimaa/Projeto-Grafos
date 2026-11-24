@@ -15,6 +15,143 @@
         "arcos_entre_camadas": {
             "quantidade_arcos": 0,
             "casas_geradoras": []
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(1,1)|-|{}",
+                "grau": 2
+            },
+            "maior_grau_entrada": {
+                "estado": "(1,1)|-|{}",
+                "grau": 2
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 1,
+                "qtd_casas_com_maxima": 24,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 4,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 5,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 6,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 7,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 8,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 11,
+                        "simbolo": "G"
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 2,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 4,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 11,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m02_uma_chave": {
@@ -39,6 +176,103 @@
                     "simbolo": "a"
                 }
             ]
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(1,1)|-|{}",
+                "grau": 2
+            },
+            "maior_grau_entrada": {
+                "estado": "(1,1)|-|{}",
+                "grau": 2
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 2,
+                "qtd_casas_com_maxima": 16,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 4,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 5,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 6,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 10,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m03_tres_chaves": {
@@ -73,6 +307,83 @@
                     "simbolo": "a"
                 }
             ]
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(3,4)|abc|{}",
+                "grau": 3
+            },
+            "maior_grau_entrada": {
+                "estado": "(1,12)|ab|{}",
+                "grau": 3
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 4,
+                "qtd_casas_com_maxima": 12,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 6,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 7,
+                        "coluna": 1,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m04_esteiras": {
@@ -97,6 +408,111 @@
                     "simbolo": "a"
                 }
             ]
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(3,8)|-|{}",
+                "grau": 3
+            },
+            "maior_grau_entrada": {
+                "estado": "(3,8)|-|{}",
+                "grau": 3
+            },
+            "becos": [
+                "(1,3)|-|{}",
+                "(1,3)|a|{}"
+            ],
+            "multiplicidade": {
+                "maxima": 2,
+                "qtd_casas_com_maxima": 17,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "^"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 8,
+                        "simbolo": ">"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 6,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 7,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 9,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 10,
+                        "simbolo": ","
+                    }
+                ]
+            }
         }
     },
     "m05_bonus": {
@@ -115,6 +531,128 @@
         "arcos_entre_camadas": {
             "quantidade_arcos": 0,
             "casas_geradoras": []
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(3,1)|-|{0,1,2}",
+                "grau": 3
+            },
+            "maior_grau_entrada": {
+                "estado": "(3,2)|-|{0,1,2}",
+                "grau": 4
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 6,
+                "qtd_casas_com_maxima": 21,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 7,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 8,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 9,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 12,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 13,
+                        "simbolo": "G"
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 3,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m06_fonte": {
@@ -133,6 +671,143 @@
         "arcos_entre_camadas": {
             "quantidade_arcos": 0,
             "casas_geradoras": []
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(1,1)|-|{}",
+                "grau": 2
+            },
+            "maior_grau_entrada": {
+                "estado": "(1,1)|-|{}",
+                "grau": 2
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 1,
+                "qtd_casas_com_maxima": 24,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 11,
+                        "simbolo": "G"
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 5,
+                        "simbolo": "*"
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 11,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m07_impossivel": {
@@ -151,6 +826,103 @@
         "arcos_entre_camadas": {
             "quantidade_arcos": 0,
             "casas_geradoras": []
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(3,1)|-|{}",
+                "grau": 3
+            },
+            "maior_grau_entrada": {
+                "estado": "(3,1)|-|{}",
+                "grau": 3
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 1,
+                "qtd_casas_com_maxima": 16,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 5,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m08_grande": {
@@ -190,6 +962,848 @@
                     "simbolo": "a"
                 }
             ]
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(3,15)|abcd|{}",
+                "grau": 4
+            },
+            "maior_grau_entrada": {
+                "estado": "(3,15)|abcd|{}",
+                "grau": 4
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 5,
+                "qtd_casas_com_maxima": 165,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 5,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 4,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 6,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 6,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 7,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 7,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 7,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 7,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 7,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 7,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 8,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 8,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 8,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 9,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 9,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 9,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 9,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 9,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 10,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 10,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 10,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 11,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 11,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 11,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 11,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 11,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 11,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 12,
+                        "coluna": 3,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 12,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 13,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 14,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 14,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 14,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 14,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 14,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 15,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 16,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 16,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 16,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 16,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 16,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 3,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 17,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 18,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 18,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 18,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 19,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 20,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 20,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 20,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 20,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 5,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 21,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 22,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 22,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 22,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 23,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 23,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 23,
+                        "coluna": 3,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 23,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 23,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 23,
+                        "coluna": 7,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 24,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 24,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 24,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 5,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 13,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 14,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 25,
+                        "coluna": 15,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 26,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 26,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 26,
+                        "coluna": 13,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 26,
+                        "coluna": 15,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 1,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 11,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 12,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 13,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 15,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 16,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 27,
+                        "coluna": 17,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 28,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 28,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 28,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 28,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 28,
+                        "coluna": 13,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 28,
+                        "coluna": 17,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 1,
+                        "simbolo": ","
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 4,
+                        "simbolo": "~"
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 5,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 6,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 7,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 8,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 9,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 10,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 11,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 13,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 14,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 15,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 16,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 29,
+                        "coluna": 17,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m01_grupo": {
@@ -224,6 +1838,43 @@
                     "simbolo": "c"
                 }
             ]
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(1,7)|abc|{0}",
+                "grau": 3
+            },
+            "maior_grau_entrada": {
+                "estado": "(3,1)|ab|{}",
+                "grau": 4
+            },
+            "becos": [],
+            "multiplicidade": {
+                "maxima": 10,
+                "qtd_casas_com_maxima": 4,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    }
+                ]
+            }
         }
     },
     "m02_grupo": {
@@ -248,6 +1899,76 @@
                     "simbolo": "a"
                 }
             ]
+        },
+        "graus_e_rankings": {
+            "maior_grau_saida": {
+                "estado": "(1,3)|-|{}",
+                "grau": 3
+            },
+            "maior_grau_entrada": {
+                "estado": "(1,3)|a|{}",
+                "grau": 3
+            },
+            "becos": [
+                "(5,3)|-|{}",
+                "(5,3)|a|{}"
+            ],
+            "multiplicidade": {
+                "maxima": 2,
+                "qtd_casas_com_maxima": 10,
+                "casas_com_maxima": [
+                    {
+                        "linha": 1,
+                        "coluna": 1,
+                        "simbolo": "S"
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 1,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 1,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 2,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 1,
+                        "simbolo": "v"
+                    },
+                    {
+                        "linha": 4,
+                        "coluna": 1,
+                        "simbolo": "v"
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 1,
+                        "simbolo": ">"
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 2,
+                        "simbolo": ">"
+                    },
+                    {
+                        "linha": 5,
+                        "coluna": 3,
+                        "simbolo": ">"
+                    }
+                ]
+            }
         }
     }
 }
