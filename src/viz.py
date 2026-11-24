@@ -86,12 +86,26 @@ from src.labirinto_interativo import rotulo
 
 # Cores do terreno: as do desenhar_grafo acima; "#", esteiras, "+" e "*" são PROVISÓRIAS.
 CORES_TERRENO = {
-    "#": "#2d3436", ".": "#ecf0f1", "S": "#2ecc71", "G": "#e74c3c",
-    ",": "#95a5a6", "~": "#3498db",
-    "a": "#f1c40f", "b": "#f1c40f", "c": "#f1c40f", "d": "#f1c40f",
-    "A": "#e67e22", "B": "#e67e22", "C": "#e67e22", "D": "#e67e22",
-    ">": "#dfe6e9", "<": "#dfe6e9", "^": "#dfe6e9", "v": "#dfe6e9",
-    "+": "#a29bfe", "*": "#fd79a8",
+    "#": "#34495E",
+    ".": "#ecf0f1",
+    "S": "#2ecc71",
+    "G": "#e74c3c",
+    ",": "#95a5a6",
+    "~": "#3498db",
+    "a": "#f1c40f",
+    "b": "#f1c40f",
+    "c": "#f1c40f",
+    "d": "#f1c40f",
+    "A": "#e67e22",
+    "B": "#e67e22",
+    "C": "#e67e22",
+    "D": "#e67e22",
+    ">": "#dfe6e9",
+    "<": "#dfe6e9",
+    "^": "#dfe6e9",
+    "v": "#dfe6e9",
+    "+": "#7E57C2",
+    "*": "#C2185B",
 }
 NOMES_TERRENO = {
     "#": "parede", ".": "chão", "S": "início (S)", "G": "saída (G)", ",": "lama (custo 3)",
@@ -100,9 +114,16 @@ NOMES_TERRENO = {
     ">": "esteira", "<": "esteira", "^": "esteira", "v": "esteira",
     "+": "bônus (+)", "*": "fonte (*)",
 }
-CORES_CAMADAS = ["#000000", "#555555", "#888888", "#aaaaaa", "#333333", "#777777"]  # PROVISÓRIO
-COR_ARCO_CAMADA = "#b2bec3"          # arcos dentro da mesma camada (PROVISÓRIO)
-COR_ARCO_ENTRE_CAMADAS = "#d35400"   # arcos que mudam de camada (PROVISÓRIO)
+CORES_CAMADAS = [
+    "#6A3D9A",
+    "#A23B72",
+    "#795548",
+    "#00695C",
+    "#827717",
+    "#424242"
+]
+COR_ARCO_CAMADA = "#95A5A6"      
+COR_ARCO_ENTRE_CAMADAS = "#34495E"
 MAPA_DE_CORES_HEATMAP = "Greys"      # PROVISÓRIO
 COR_PAREDE_HEATMAP = "#ffffff"       # PROVISÓRIO
 DPI = 150
