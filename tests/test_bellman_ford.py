@@ -67,7 +67,8 @@ def test_exportacao_bellman_ford():
     assert origem is not None, "Origem 'S' não encontrada no mapa."
     assert destino is not None, "Destino 'G' não encontrado no mapa."
     
-    distancias, antecessores = bellman_ford(grafo, origem)
+    resultado = bellman_ford(grafo, origem)
+    distancias, antecessores = resultado["distancias"], resultado["antecessores"]
     arestas_caminho = []
     vertice_atual = destino
     
