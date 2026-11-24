@@ -21,6 +21,7 @@ from pathlib import Path
 
 from src.graphs.algorithms import bellman_ford, bfs, dijkstra
 from src.graphs.estados import construir_grafo_estados
+from src.graphs.main import gerar_relatorios
 from src.graphs.io import ler_mapa
 from src.labirinto_interativo import execucao_ok, execucao_status, gerar_html
 from src.viz import (desenhar_arvore_bfs, desenhar_camadas, desenhar_heatmap_multiplicidade,
@@ -162,11 +163,17 @@ def main(argv=None):
     parser.add_argument("--mapa", nargs="+", help="um ou mais arquivos de mapa (.txt)")
     parser.add_argument("--interactive", action="store_true", help="gera labirinto_interativo.html")
     parser.add_argument("--figuras", action="store_true", help="gera as figuras da Seção 8 (PNG)")
+    parser.add_argument("--relatorios", action="store_true",
+                        help="gera arestas, graus, metricas_global.json e camadas.json (Seções 2 e 3)")
     parser.add_argument("--out", default="out/parte1", help="pasta de saída")
     args = parser.parse_args(argv)
 
-    if not (args.interactive or args.figuras):
-        parser.error("por enquanto só --interactive e --figuras estão implementados")
+    if not (args.interactive or args.figuras or args.relatorios):
+        parser.error("use --relatorios, --interactive ou --figuras")
+
+    if args.relatorios:
+        gerar_relatorios(args.out)
+        print(f"Gerados: arestas, graus, metricas_global.json e camadas.json em {args.out}")
 
     if args.interactive:
         mapas = montar_dados_interativo(_arquivos_de_mapa(args.mapa))

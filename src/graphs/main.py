@@ -111,7 +111,7 @@ def exportar_graus_csv(nome_mapa: str, grafo_estados, bonus_idx: dict, pasta_sai
             writer.writerow([formatar_estado(v, bonus_idx), grau_entrada[v], grau_saida[v]])
 
 
-def exportar_arestas_csv(nome_mapa: str, grafo_estados, bonus_idx: dict, pasta_saida: Path) -> None:
+def exportar_arestas_csv(nome_mapa: str, grafo_estados, bonus_idx: dict, pasta_saida: Path, mapa: list[str]) -> None:
     arcos = [
         (u, v, peso)
         for u, v, peso in grafo_estados.retornar_ligacoes()
@@ -129,14 +129,14 @@ def exportar_arestas_csv(nome_mapa: str, grafo_estados, bonus_idx: dict, pasta_s
                 formatar_estado(origem, bonus_idx),
                 formatar_estado(destino, bonus_idx),
                 mov,
-                f"({dest_i},{dest_j})",
+                 mapa[dest_i][dest_j],
                 peso,
             ])
 
 
-def gerar_relatorios() -> None:
+def gerar_relatorios(pasta_saida="out/parte1") -> None:
     pastas_mapas = [Path("data/mapas"), Path("data/mapas_grupo")]
-    pasta_saida = Path("out/parte1")
+    pasta_saida = Path(pasta_saida)
     pasta_saida.mkdir(parents=True, exist_ok=True)
 
     metricas_global_todos = {}
@@ -196,7 +196,7 @@ def gerar_relatorios() -> None:
         camadas_todos[nome_mapa] = metricas_camadas
 
         exportar_graus_csv(nome_mapa, g_est, bonus_idx, pasta_saida)
-        exportar_arestas_csv(nome_mapa, g_est, bonus_idx, pasta_saida)
+        exportar_arestas_csv(nome_mapa, g_est, bonus_idx, pasta_saida, mapa)
 
     with open(pasta_saida / "metricas_global.json", mode="w", encoding="utf-8") as f:
         json.dump(metricas_global_todos, f, indent=4, ensure_ascii=False)
