@@ -65,12 +65,20 @@ def custos_acumulados(grafo, caminho):
                custos.append(custos[-1] + custo)
                break
    return custos
-def estados_armadilha(grafo, inicio):
-    """Estados alcançáveis dos quais o ALVO é inalcançável (busca no grafo transposto).
 
-    Enquanto não estiver implementada, devolve lista vazia e o HTML não realça nada.
-    """
-    return []
+    
+    
+def estados_armadilha(grafo, inicio):
+    distancias_ida, _ = bfs(grafo, inicio)
+    distancias_volta, _ = bfs(grafo.transposto(), "ALVO")
+
+    armadilhas = [
+        estado for estado in grafo.retornar_vertices()
+        if distancias_ida[estado] != float('inf')
+        and distancias_volta[estado] == float('inf')
+        and estado != "ALVO"
+    ]
+    return armadilhas
 
 # ==================================================================
 
