@@ -1,3 +1,7 @@
+import random
+import numpy as np
+import pandas as pd
+
 class Grafo:
     def __init__(self):
         self.adjacencia = {}
@@ -8,8 +12,13 @@ class Grafo:
             raise ValueError(f"Vértice já existe: {vertice}")
         self.adjacencia[vertice] = []
 
-    def ligar(self, origem, destino, peso, movimento=None):
-        if origem not in self.adjacencia or destino not in self.adjacencia:
+    def ligar(self, origem, destino, peso, movimento=None, criar_nos=False):
+        if criar_nos:
+            if origem not in self.adjacencia:
+                self.adicionar_no(origem)
+            if destino not in self.adjacencia:
+                self.adicionar_no(destino)
+        elif origem not in self.adjacencia or destino not in self.adjacencia:
             raise ValueError(f"Não existe um dos vértices no grafo: {origem}, {destino}")
 
         self.adjacencia[origem].append([destino, peso])
@@ -68,3 +77,31 @@ class Grafo:
                 mov = self.movimentos.get((origem, destino))
                 gt.ligar(destino, origem, peso, movimento=mov)
         return gt
+
+def gerar_subgrafo_amostra(df: pd.DataFrame, fracao: float, seed: int = 42) -> pd.DataFrame:
+    if not (0 < fracao <= 1.0):
+        raise ValueError(f"A fração deve estar no intervalo (0, 1.0]. Recebido: {fracao}")
+
+    if fracao == 1.0:
+        return df.copy()
+
+    nos_unicos = sorted(set(df["source"]).union(set(df["target"])))
+    qtd_nos = max(1, int(len(nos_unicos) * fracao))
+
+    rng = np.random.default_rng(seed)
+    nos_selecionados = set(rng.choice(nos_unicos, size=qtd_nos, replace=False))
+
+    condicao_origem = df["source"].isin(nos_selecionados)
+    condicao_destino = df["target"].isin(nos_selecionados)
+
+    return df[condicao_origem & condicao_destino].reset_index(drop=True)
+
+
+def construir_grafo_de_dataframe(df: pd.DataFrame) -> Grafo:
+    grafo = Grafo()
+
+    for origem, destino, peso in zip(df["source"], df["target"], df["peso"]):
+        grafo.ligar(origem, destino, float(peso), criar_nos=True)
+
+    return grafo
+    
