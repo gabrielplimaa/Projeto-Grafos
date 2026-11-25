@@ -1,15 +1,12 @@
 """Linha de comando do projeto.
 
-Por enquanto estão montadas as opções --interactive (labirinto interativo) e
---figuras (figuras da Seção 8):
-
+Exemplos de uso:
     python -m src.cli --interactive --out ./out/parte1/
     python -m src.cli --mapa ./data/mapas/m03_tres_chaves.txt --interactive --out ./out/parte1/
     python -m src.cli --figuras --out ./out/parte1/
+    python -m src.cli --graficos --out ./out/graficos_relatorio/
 
 Sem --mapa, usa todos os mapas de data/mapas/ e data/mapas_grupo/.
-As demais opções do enunciado (--alg, --armadilhas, --fonte-consumivel, --dataset...)
-entram aqui depois, pelos outros pacotes.
 """
 
 # [IA] Claude – sintaxe de argparse e orquestração de IO (leitura dos mapas, tratamento
@@ -48,26 +45,26 @@ def estado_final(grafo, mapa, distancias):
 
 def reconstruir_caminho(antecessores, destino):
     caminho = []
-    atual = destino 
+    atual = destino
     while atual is not None:
         caminho.append(atual)
         atual = antecessores.get(atual)
     caminho.reverse()
     return caminho
 
-def custos_acumulados(grafo, caminho):
-   custos = [0]
-   for i in range(1, len(caminho)):
-       anterior = caminho[i - 1]
-       atual = caminho[i]
-       for vizinho, custo in grafo.retornar_vizinhos(anterior):
-           if vizinho == atual:
-               custos.append(custos[-1] + custo)
-               break
-   return custos
 
-    
-    
+def custos_acumulados(grafo, caminho):
+    custos = [0]
+    for i in range(1, len(caminho)):
+        anterior = caminho[i - 1]
+        atual = caminho[i]
+        for vizinho, custo in grafo.retornar_vizinhos(anterior):
+            if vizinho == atual:
+                custos.append(custos[-1] + custo)
+                break
+    return custos
+
+
 def estados_armadilha(grafo, inicio):
     distancias_ida, _ = bfs(grafo, inicio)
     distancias_volta, _ = bfs(grafo.transposto(), "ALVO")
@@ -190,6 +187,8 @@ def main(argv=None):
                         help="torna a fonte '*' consumível (evita ciclo negativo no m06)")
     parser.add_argument("--interactive", action="store_true", help="gera labirinto_interativo.html")
     parser.add_argument("--figuras", action="store_true", help="gera as figuras da Seção 8 (PNG)")
+    parser.add_argument("--graficos", action="store_true",
+                        help="gera os 6 gráficos exploratórios e explanatórios do relatório (PNG)")
     parser.add_argument("--relatorios", action="store_true",
                         help="gera todos os relatórios e CSVs da Parte 1")
     parser.add_argument("--out", default="out/parte1", help="pasta de saída")
@@ -200,11 +199,24 @@ def main(argv=None):
                         help="executa casos obrigatórios e benchmark da Parte 2")
     args = parser.parse_args(argv)
 
-    if not (args.interactive or args.figuras or args.relatorios or args.alg or args.armadilhas or args.dataset):
-        parser.error("use --alg, --armadilhas, --relatorios, --interactive, --figuras ou --dataset")
+    if not (args.interactive or args.figuras or args.graficos or args.relatorios or args.alg or args.armadilhas or args.dataset):
+        parser.error("use --alg, --armadilhas, --relatorios, --interactive, --figuras, --graficos ou --dataset")
 
     pasta_saida = Path(args.out)
     pasta_saida.mkdir(parents=True, exist_ok=True)
+
+    # Geração dos 6 gráficos exploratórios e explanatórios do relatório
+    if args.graficos:
+        from src.graficos_relatorio import gerar_graficos_relatorio
+        caminho_ds = None
+        if args.dataset:
+            caminho_ds = Path(args.dataset)
+            if caminho_ds.is_dir():
+                caminho_ds = next(caminho_ds.glob("*.csv"))
+        for saida in gerar_graficos_relatorio(pasta_saida, caminho_dataset=caminho_ds):
+            print(f"Gerado: {saida}")
+        if args.dataset and not (args.benchmark or args.alg):
+            return
 
     # Execução da Parte 2 (dataset maior)
     if args.dataset:
