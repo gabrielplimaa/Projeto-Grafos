@@ -1,35 +1,30 @@
-import json
-from src.graphs.algorithms import dfs
+import pytest
+from src.graphs.algorithms import dijkstra
 from src.graphs.graph import Grafo
 
 
-def test_dfs_classificacao_e_ciclo(tmp_path):
-    # Grafo dirigido com os 4 tipos de arcos (arvore, retorno, avanco, cruzamento):
-    # Ordem de vizinhos importa:
-    # A -> B, A -> C
-    # B -> D
-    # D -> B (retorno -> ciclo)
-    # A -> D (avanco: D já foi descoberto e finalizado no ramo de B)
-    # C -> D (cruzamento: D já foi finalizado em outro ramo)
+def test_dijkstra_encontra_menor_custo():
     grafo = Grafo()
-    for v in ["A", "B", "C", "D"]:
-        grafo.adicionar_no(v)
+    for vertice in ("A", "B", "C"):
+        grafo.adicionar_no(vertice)
+    grafo.ligar("A", "C", 10)
+    grafo.ligar("A", "B", 2)
+    grafo.ligar("B", "C", 3)
+
+    distancias, antecessores = dijkstra(grafo, "A")
+
+    assert distancias["C"] == 5
+    assert antecessores["C"] == "B"
+    assert antecessores["B"] == "A"
+
+
+def test_dijkstra_recusa_peso_negativo():
+    grafo = Grafo()
+    for vertice in ("A", "B", "D", "E"):
+        grafo.adicionar_no(vertice)
     grafo.ligar("A", "B", 1)
-    grafo.ligar("A", "C", 1)
-    grafo.ligar("A", "D", 1)
-    grafo.ligar("B", "D", 1)
-    grafo.ligar("D", "B", 1)
-    grafo.ligar("C", "D", 1)
+    # O arco negativo fica fora do componente alcançável a partir de A.
+    grafo.ligar("D", "E", -1)
 
-    resultado = dfs(grafo, "A")
-    contagens = resultado["contagens"]
-
-    assert resultado["tem_ciclo"] is True
-    assert contagens == {"arvore": 3, "retorno": 1, "avanco": 1, "cruzamento": 1}
-
-    # Exportação segura em pasta temporária (tmp_path)
-    arquivo_temp = tmp_path / "resultado_dfs.json"
-    with open(arquivo_temp, mode="w", encoding="utf-8") as f:
-        json.dump(resultado, f, indent=4)
-
-    assert arquivo_temp.exists()
+    with pytest.raises(ValueError, match="peso negativo"):
+        dijkstra(grafo, "A")
