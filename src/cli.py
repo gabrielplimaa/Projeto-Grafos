@@ -285,7 +285,7 @@ def main(argv=None):
 
             if args.armadilhas:
                 lista_arm = estados_armadilha(grafo, inicio)
-                arm_fmt = [rotulo(e, bonus_idx=bonus_idx) for e in lista_arm]
+                arm_fmt = [rotulo(e, bonus_idx=bonus_idx, ignorar_nao_bonus=args.fonte_consumivel) for e in lista_arm]
                 print(f"Estados-armadilha ({len(arm_fmt)}): {arm_fmt}")
 
     if args.relatorios:
