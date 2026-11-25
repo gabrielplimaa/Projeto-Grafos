@@ -1,0 +1,10 @@
+mapa,abordagem,passos,caminho_valido,observacao
+m02_uma_chave,G_pos_porta_chao,10,False,"Atravessou porta 'A' em (1,6) sem a chave 'a'"
+m02_uma_chave,G_pos_porta_parede,-1,False,Bloqueado por porta tratada como parede
+m02_uma_chave,G_est,34,True,Modelagem completa com estados
+m03_tres_chaves,G_pos_porta_chao,21,False,"Atravessou porta 'C' em (7,13) sem a chave 'c'"
+m03_tres_chaves,G_pos_porta_parede,-1,False,Bloqueado por porta tratada como parede
+m03_tres_chaves,G_est,87,True,Modelagem completa com estados
+m04_esteiras,G_pos_porta_chao,14,False,"Atravessou porta 'A' em (1,10) sem a chave 'a'"
+m04_esteiras,G_pos_porta_parede,-1,False,Bloqueado por porta tratada como parede
+m04_esteiras,G_est,20,True,Modelagem completa com estados

@@ -182,24 +182,69 @@ def gerar_figuras(pasta_saida):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Projeto de Teoria dos Grafos: labirinto com chaves")
     parser.add_argument("--mapa", nargs="+", help="um ou mais arquivos de mapa (.txt)")
+    parser.add_argument("--alg", choices=["BFS", "DFS", "DIJKSTRA", "BELLMAN_FORD"],
+                        help="executa um algoritmo específico no(s) mapa(s)")
+    parser.add_argument("--armadilhas", action="store_true",
+                        help="identifica e exibe/salva os estados-armadilha do mapa")
+    parser.add_argument("--fonte-consumivel", action="store_true",
+                        help="torna a fonte '*' consumível (evita ciclo negativo no m06)")
     parser.add_argument("--interactive", action="store_true", help="gera labirinto_interativo.html")
     parser.add_argument("--figuras", action="store_true", help="gera as figuras da Seção 8 (PNG)")
     parser.add_argument("--relatorios", action="store_true",
-                        help="gera arestas, graus, metricas_global.json e camadas.json (Seções 2 e 3)")
+                        help="gera todos os relatórios e CSVs da Parte 1")
     parser.add_argument("--out", default="out/parte1", help="pasta de saída")
     args = parser.parse_args(argv)
 
-    if not (args.interactive or args.figuras or args.relatorios):
-        parser.error("use --relatorios, --interactive ou --figuras")
+    if not (args.interactive or args.figuras or args.relatorios or args.alg or args.armadilhas):
+        parser.error("use --alg, --armadilhas, --relatorios, --interactive ou --figuras")
+
+    pasta_saida = Path(args.out)
+    pasta_saida.mkdir(parents=True, exist_ok=True)
+
+    # Execução direta de --alg ou --armadilhas (usado no mapa surpresa e no m06)
+    if args.alg or args.armadilhas:
+        from src.graphs.algorithms import dfs
+        from src.graphs.estados import numerar_bonus, rotulo
+
+        for arq in _arquivos_de_mapa(args.mapa):
+            mapa = ler_mapa(arq)
+            bonus_idx = numerar_bonus(mapa)
+            grafo, inicio = construir_grafo_estados(mapa, fonte_consumivel=args.fonte_consumivel)
+            print(f"\n=== Mapa: {arq.stem} (fonte_consumivel={args.fonte_consumivel}) ===")
+
+            if args.alg:
+                if args.alg == "DFS":
+                    res_dfs = dfs(grafo, inicio)
+                    print(f"DFS -> Contagens: {res_dfs['contagens']} | Tem ciclo: {res_dfs['tem_ciclo']}")
+                else:
+                    mapa_alg = {"BFS": bfs, "DIJKSTRA": dijkstra, "BELLMAN_FORD": bellman_ford}
+                    res = _executar(mapa_alg[args.alg], grafo, inicio, mapa)
+                    print(f"{args.alg} -> Status: {res['status']}")
+                    if res["status"] == "ok":
+                        passos_dict = res["passos"]
+                        caminho_fmt = [
+                            f"({p['pos'][0]},{p['pos'][1]})|{p['chaves'] or '-'}|{{{','.join(map(str, p['bonus']))}}}"
+                            for p in passos_dict
+                        ]
+                        print(f"Passos: {len(caminho_fmt) - 1} | Custo: {passos_dict[-1]['custo']}")
+                        print(f"Caminho: {' -> '.join(caminho_fmt)}")
+                    else:
+                        print(f"Detalhe: {res.get('mensagem', '')}")
+
+            if args.armadilhas:
+                lista_arm = estados_armadilha(grafo, inicio)
+                arm_fmt = [rotulo(e, bonus_idx=bonus_idx) for e in lista_arm]
+                print(f"Estados-armadilha ({len(arm_fmt)}): {arm_fmt}")
 
     if args.relatorios:
         gerar_relatorios(args.out)
-        print(f"Gerados: arestas, graus, metricas_global.json e camadas.json em {args.out}")
+        print(f"Gerados: relatórios completos da Parte 1 em {args.out}")
 
     if args.interactive:
         mapas = montar_dados_interativo(_arquivos_de_mapa(args.mapa))
-        saida = gerar_html(mapas, Path(args.out) / "labirinto_interativo.html")
+        saida = gerar_html(mapas, pasta_saida / "labirinto_interativo.html")
         print(f"Gerado: {saida} ({len(mapas)} mapas)")
+
     if args.figuras:
         for saida in gerar_figuras(args.out):
             print(f"Gerado: {saida}")

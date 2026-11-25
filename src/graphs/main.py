@@ -1,6 +1,7 @@
 import csv
 import json
 from pathlib import Path
+from src.graphs.algorithms import bellman_ford, bfs, dfs, dijkstra
 from src.graphs.io import ler_mapa
 from src.graphs.estados import (
     construir_grafo_posicoes,
@@ -172,6 +173,166 @@ def exportar_arestas_csv(nome_mapa: str, grafo_estados, bonus_idx: dict, pasta_s
                 peso,
             ])
 
+def _validar_caminho_g_pos(mapa: list[str], caminho: list[tuple[int, int]]) -> tuple[bool, str]:
+    """Verifica se um caminho em G_pos (porta como chão) passa por porta sem ter pego a chave."""
+    chaves_coletadas = set()
+    for i, j in caminho:
+        celula = mapa[i][j]
+        if celula in "abcd":
+            chaves_coletadas.add(celula)
+        elif celula in "ABCD":
+            if celula.lower() not in chaves_coletadas:
+                return False, f"Atravessou porta '{celula}' em ({i},{j}) sem a chave '{celula.lower()}'"
+    return True, "Caminho válido respeitando portas e chaves"
+
+
+def exportar_saidas_caminhos_e_analises(caminhos_mapas: list[Path], pasta_saida: Path) -> None:
+    from src.cli import custos_acumulados, estado_final, estados_armadilha, reconstruir_caminho
+    
+    linhas_solucoes = []
+    linhas_comparacao = []
+    linhas_dfs = []
+
+    for caminho_mapa in caminhos_mapas:
+        nome_mapa = caminho_mapa.stem
+        mapa = ler_mapa(str(caminho_mapa))
+        bonus_idx = numerar_bonus(mapa)
+        g_est, inicio = construir_grafo_estados(mapa)
+
+        # --- 1. SOLUÇÕES (BFS, Dijkstra, Bellman-Ford) ---
+        # --- 1. SOLUÇÕES (BFS, Dijkstra, Bellman-Ford) ---
+        for nome_alg, func_alg in [("BFS", bfs), ("Dijkstra", dijkstra), ("Bellman-Ford", bellman_ford)]:
+            try:
+                res = func_alg(g_est, inicio)
+            except ValueError:
+                linhas_solucoes.append([nome_mapa, nome_alg, "", "", "RECUSA", ""])
+                continue
+
+            if isinstance(res, dict):
+                if res["tem_ciclo_negativo"]:
+                    ciclo_fmt = [formatar_estado(v, bonus_idx) for v in res["ciclo"]]
+                    linhas_solucoes.append([
+                        nome_mapa,
+                        nome_alg,
+                        len(ciclo_fmt) - 1,
+                        res["custo_ciclo"],
+                        "CICLO_NEGATIVO",
+                        " -> ".join(ciclo_fmt),
+                    ])
+                    if nome_mapa == "m06_fonte":
+                        with open(pasta_saida / "ciclo_negativo_m06.json", "w", encoding="utf-8") as f:
+                            json.dump({
+                                "mapa": nome_mapa,
+                                "custo_ciclo": res["custo_ciclo"],
+                                "ciclo": ciclo_fmt,
+                            }, f, indent=4, ensure_ascii=False)
+                    continue
+                distancias, antecessores = res["distancias"], res["antecessores"]
+            else:
+                distancias, antecessores = res
+
+            destino = estado_final(g_est, mapa, distancias)
+            if destino is None:
+                linhas_solucoes.append([nome_mapa, nome_alg, "", "", "SEM_SOLUCAO", ""])
+            else:
+                caminho = reconstruir_caminho(antecessores, destino)
+                custos = custos_acumulados(g_est, caminho)
+                passos = len(caminho) - 1
+                custo_total = custos[-1]
+                caminho_fmt = " -> ".join(formatar_estado(v, bonus_idx) for v in caminho)
+
+                linhas_solucoes.append([
+                    nome_mapa,
+                    nome_alg,
+                    passos,
+                    custo_total,
+                    "OK",
+                    caminho_fmt,
+                ])
+
+                if nome_mapa == "m03_tres_chaves" and nome_alg == "Bellman-Ford":
+                    with open(pasta_saida / "percurso_m03.json", "w", encoding="utf-8") as f:
+                        json.dump({
+                            "mapa": nome_mapa,
+                            "custo_total": custo_total,
+                            "passos": passos,
+                            "percurso": [formatar_estado(v, bonus_idx) for v in caminho],
+                            "custos_acumulados": custos,
+                        }, f, indent=4, ensure_ascii=False)
+
+        # --- 2. DFS CLASSIFICAÇÃO ---
+        res_dfs = dfs(g_est, inicio)
+        c_dfs = res_dfs["contagens"]
+        linhas_dfs.append([
+            nome_mapa,
+            c_dfs["arvore"],
+            c_dfs["retorno"],
+            c_dfs["avanco"],
+            c_dfs["cruzamento"],
+        ])
+
+        # --- 3. ARMADILHAS (m04 e m07) ---
+        if nome_mapa in ("m04_esteiras", "m07_impossivel"):
+            armadilhas = estados_armadilha(g_est, inicio)
+            curto = nome_mapa.split("_")[0]
+            with open(pasta_saida / f"armadilhas_{curto}.csv", "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["estado", "posicao", "chaves", "bonus"])
+                for est in armadilhas:
+                    pos, chaves, bonus = est
+                    chaves_str = "".join(sorted(chaves)) if chaves else "-"
+                    bonus_str = "{" + ",".join(str(bonus_idx[b]) for b in sorted(bonus)) + "}"
+                    writer.writerow([formatar_estado(est, bonus_idx), f"({pos[0]},{pos[1]})", chaves_str, bonus_str])
+
+        # --- 4. COMPARAÇÃO DE MODELAGENS (m02, m03, m04) ---
+        if nome_mapa in ("m02_uma_chave", "m03_tres_chaves", "m04_esteiras"):
+            pos_s = next((i, j) for i, linha in enumerate(mapa) for j, c in enumerate(linha) if c == "S")
+            pos_g = next((i, j) for i, linha in enumerate(mapa) for j, c in enumerate(linha) if c == "G")
+
+            # (a) G_pos porta como chão
+            g_pos_chao = construir_grafo_posicoes(mapa, porta_como_parede=False)
+            dist_a, pred_a = bfs(g_pos_chao, pos_s)
+            if dist_a.get(pos_g, float("inf")) != float("inf"):
+                cam_a = reconstruir_caminho(pred_a, pos_g)
+                valido_a, obs_a = _validar_caminho_g_pos(mapa, cam_a)
+                linhas_comparacao.append([nome_mapa, "G_pos_porta_chao", len(cam_a) - 1, valido_a, obs_a])
+            else:
+                linhas_comparacao.append([nome_mapa, "G_pos_porta_chao", -1, False, "Sem caminho até G"])
+
+            # (b) G_pos porta como parede
+            g_pos_parede = construir_grafo_posicoes(mapa, porta_como_parede=True)
+            dist_b, pred_b = bfs(g_pos_parede, pos_s)
+            if dist_b.get(pos_g, float("inf")) != float("inf"):
+                cam_b = reconstruir_caminho(pred_b, pos_g)
+                linhas_comparacao.append([nome_mapa, "G_pos_porta_parede", len(cam_b) - 1, True, "Caminho sem passar por portas"])
+            else:
+                linhas_comparacao.append([nome_mapa, "G_pos_porta_parede", -1, False, "Bloqueado por porta tratada como parede"])
+
+            # (c) G_est
+            dist_c, pred_c = bfs(g_est, inicio)
+            dest_c = estado_final(g_est, mapa, dist_c)
+            if dest_c is not None:
+                cam_c = reconstruir_caminho(pred_c, dest_c)
+                linhas_comparacao.append([nome_mapa, "G_est", len(cam_c) - 1, True, "Modelagem completa com estados"])
+            else:
+                linhas_comparacao.append([nome_mapa, "G_est", -1, False, "Sem solução em G_est"])
+
+    # Escrita dos CSVs consolidados
+    with open(pasta_saida / "solucoes.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["mapa", "algoritmo", "passos", "custo", "status", "caminho"])
+        writer.writerows(linhas_solucoes)
+
+    with open(pasta_saida / "dfs_classificacao.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["mapa", "arvore", "retorno", "avanco", "cruzamento"])
+        writer.writerows(linhas_dfs)
+
+    with open(pasta_saida / "comparacao_modelagem.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["mapa", "abordagem", "passos", "caminho_valido", "observacao"])
+        writer.writerows(linhas_comparacao)
+
 
 def gerar_relatorios(pasta_saida="out/parte1") -> None:
     pastas_mapas = [Path("data/mapas"), Path("data/mapas_grupo")]
@@ -238,11 +399,14 @@ def gerar_relatorios(pasta_saida="out/parte1") -> None:
         exportar_graus_csv(nome_mapa, g_est, bonus_idx, pasta_saida)
         exportar_arestas_csv(nome_mapa, g_est, bonus_idx, pasta_saida, mapa)
 
+    exportar_saidas_caminhos_e_analises(caminhos, pasta_saida)
     with open(pasta_saida / "metricas_global.json", mode="w", encoding="utf-8") as f:
         json.dump(metricas_global_todos, f, indent=4, ensure_ascii=False)
 
     with open(pasta_saida / "camadas.json", mode="w", encoding="utf-8") as f:
         json.dump(camadas_todos, f, indent=4, ensure_ascii=False)
+
+
 
 
 if __name__ == "__main__":

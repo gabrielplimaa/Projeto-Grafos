@@ -147,43 +147,35 @@
     "m01_grupo": {
         "sem_chaves": {
             "chaves": [],
-            "ordem": 4,
-            "tamanho": 6,
-            "densidade": 0.5
+            "ordem": 2,
+            "tamanho": 2,
+            "densidade": 1.0
         },
         "a": {
             "chaves": [
                 "a"
             ],
-            "ordem": 15,
-            "tamanho": 27,
-            "densidade": 0.128571
-        },
-        "b": {
-            "chaves": [
-                "b"
-            ],
-            "ordem": 22,
-            "tamanho": 41,
-            "densidade": 0.088745
+            "ordem": 51,
+            "tamanho": 100,
+            "densidade": 0.039216
         },
         "ab": {
             "chaves": [
                 "a",
                 "b"
             ],
-            "ordem": 47,
-            "tamanho": 92,
-            "densidade": 0.042553
+            "ordem": 55,
+            "tamanho": 112,
+            "densidade": 0.03771
         },
-        "bc": {
+        "ac": {
             "chaves": [
-                "b",
+                "a",
                 "c"
             ],
-            "ordem": 45,
-            "tamanho": 82,
-            "densidade": 0.041414
+            "ordem": 57,
+            "tamanho": 110,
+            "densidade": 0.034461
         },
         "abc": {
             "chaves": [
@@ -191,9 +183,9 @@
                 "b",
                 "c"
             ],
-            "ordem": 63,
-            "tamanho": 124,
-            "densidade": 0.031746
+            "ordem": 61,
+            "tamanho": 122,
+            "densidade": 0.033333
         }
     },
     "m02_grupo": {

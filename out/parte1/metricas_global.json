@@ -1809,22 +1809,22 @@
     "m01_grupo": {
         "G_pos": {
             "ordem": 32,
-            "tamanho": 63,
-            "densidade": 0.063508
+            "tamanho": 64,
+            "densidade": 0.064516
         },
         "G_est": {
-            "ordem": 196,
-            "tamanho": 383,
-            "densidade": 0.010021
+            "ordem": 226,
+            "tamanho": 455,
+            "densidade": 0.008948
         },
         "teto_teorico": 512,
-        "taxa_ocupacao": 0.382812,
+        "taxa_ocupacao": 0.441406,
         "arcos_entre_camadas": {
-            "quantidade_arcos": 11,
+            "quantidade_arcos": 9,
             "casas_geradoras": [
                 {
                     "linha": 1,
-                    "coluna": 4,
+                    "coluna": 3,
                     "simbolo": "a"
                 },
                 {
@@ -1833,25 +1833,25 @@
                     "simbolo": "b"
                 },
                 {
-                    "linha": 5,
-                    "coluna": 1,
+                    "linha": 3,
+                    "coluna": 9,
                     "simbolo": "c"
                 }
             ]
         },
         "graus_e_rankings": {
             "maior_grau_saida": {
-                "estado": "(1,7)|abc|{0}",
-                "grau": 3
+                "estado": "(3,3)|abc|{0}",
+                "grau": 4
             },
             "maior_grau_entrada": {
-                "estado": "(3,1)|ab|{}",
-                "grau": 4
+                "estado": "(1,7)|abc|{0}",
+                "grau": 5
             },
             "becos": [],
             "multiplicidade": {
-                "maxima": 10,
-                "qtd_casas_com_maxima": 4,
+                "maxima": 9,
+                "qtd_casas_com_maxima": 2,
                 "casas_com_maxima": [
                     {
                         "linha": 1,
@@ -1861,16 +1861,6 @@
                     {
                         "linha": 1,
                         "coluna": 2,
-                        "simbolo": "."
-                    },
-                    {
-                        "linha": 1,
-                        "coluna": 3,
-                        "simbolo": "."
-                    },
-                    {
-                        "linha": 2,
-                        "coluna": 1,
                         "simbolo": "."
                     }
                 ]
