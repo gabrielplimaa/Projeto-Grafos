@@ -193,13 +193,65 @@ def main(argv=None):
     parser.add_argument("--relatorios", action="store_true",
                         help="gera todos os relatórios e CSVs da Parte 1")
     parser.add_argument("--out", default="out/parte1", help="pasta de saída")
+    parser.add_argument("--dataset", help="pasta ou arquivo CSV do dataset da Parte 2")
+    parser.add_argument("--source", type=int, help="nó de origem para consulta na Parte 2")
+    parser.add_argument("--target", type=int, help="nó de destino para consulta na Parte 2")
+    parser.add_argument("--benchmark", action="store_true",
+                        help="executa casos obrigatórios e benchmark da Parte 2")
     args = parser.parse_args(argv)
 
-    if not (args.interactive or args.figuras or args.relatorios or args.alg or args.armadilhas):
-        parser.error("use --alg, --armadilhas, --relatorios, --interactive ou --figuras")
+    if not (args.interactive or args.figuras or args.relatorios or args.alg or args.armadilhas or args.dataset):
+        parser.error("use --alg, --armadilhas, --relatorios, --interactive, --figuras ou --dataset")
 
     pasta_saida = Path(args.out)
     pasta_saida.mkdir(parents=True, exist_ok=True)
+
+    # Execução da Parte 2 (dataset maior)
+    if args.dataset:
+        from src.parte2.experimentos import (carregar_grafo_bitcoin,
+                                             gerar_relatorio_parte2,
+                                             _reconstruir_caminho)
+
+        caminho_ds = Path(args.dataset)
+        if caminho_ds.is_dir():
+            caminho_ds = next(caminho_ds.glob("*.csv"))
+
+        if args.benchmark:
+            gerar_relatorio_parte2(caminho_ds, args.out)
+
+        if args.alg:
+            if args.source is None:
+                parser.error("informe --source ao rodar --alg com --dataset")
+            usar_pos = (args.alg == "DIJKSTRA")
+            grafo_ds, _ = carregar_grafo_bitcoin(caminho_ds, transformar_positivos=usar_pos)
+            print(f"\n=== Dataset: {caminho_ds.name} | Algoritmo: {args.alg} | Origem: {args.source} ===")
+
+            if args.alg == "BFS":
+                dist, ant = bfs(grafo_ds, args.source)
+                if args.target is not None:
+                    cam = _reconstruir_caminho(ant, args.target)
+                    print(f"Saltos até {args.target}: {dist.get(args.target)} | Caminho: {cam}")
+                else:
+                    alc = sum(1 for d in dist.values() if d != float("inf"))
+                    print(f"Nós alcançados: {alc}")
+            elif args.alg == "DFS":
+                from src.graphs.algorithms import dfs
+                res_dfs = dfs(grafo_ds, args.source)
+                print(f"Contagens: {res_dfs['contagens']} | Tem ciclo: {res_dfs['tem_ciclo']}")
+            elif args.alg == "DIJKSTRA":
+                dist, ant = dijkstra(grafo_ds, args.source)
+                if args.target is not None:
+                    cam = _reconstruir_caminho(ant, args.target)
+                    print(f"Custo (w'=w+10) até {args.target}: {dist.get(args.target)} | Caminho: {cam}")
+            elif args.alg == "BELLMAN_FORD":
+                res_bf = bellman_ford(grafo_ds, args.source)
+                print(f"Tem ciclo negativo: {res_bf['tem_ciclo_negativo']}")
+                if res_bf["tem_ciclo_negativo"]:
+                    print(f"Ciclo ({res_bf['custo_ciclo']}): {res_bf['ciclo']}")
+                elif args.target is not None:
+                    cam = _reconstruir_caminho(res_bf["antecessores"], args.target)
+                    print(f"Custo até {args.target}: {res_bf['distancias'].get(args.target)} | Caminho: {cam}")
+        return
 
     # Execução direta de --alg ou --armadilhas (usado no mapa surpresa e no m06)
     if args.alg or args.armadilhas:

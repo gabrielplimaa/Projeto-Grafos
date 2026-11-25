@@ -1,0 +1,202 @@
+{
+  "dataset": {
+    "nome": "SNAP Bitcoin OTC Trust Weighted Signed Network",
+    "arquivo": "soc-sign-bitcoinotc.csv",
+    "ordem_V": 5881,
+    "tamanho_E": 35592,
+    "transformacao_dijkstra": "w' = rating + 10 (deslocamento linear de [-10, +10] para [0, 20])"
+  },
+  "bfs_3_fontes": [
+    {
+      "fonte": 35,
+      "nos_alcancados": 5849,
+      "camadas_max": 6,
+      "tempo_medio_s": 0.012481
+    },
+    {
+      "fonte": 2642,
+      "nos_alcancados": 5849,
+      "camadas_max": 6,
+      "tempo_medio_s": 0.011127
+    },
+    {
+      "fonte": 1810,
+      "nos_alcancados": 5849,
+      "camadas_max": 5,
+      "tempo_medio_s": 0.010326
+    }
+  ],
+  "dfs_3_fontes": [
+    {
+      "fonte": 35,
+      "contagens_arcos": {
+        "arvore": 5848,
+        "retorno": 16106,
+        "avanco": 12447,
+        "cruzamento": 1127
+      },
+      "tem_ciclo": true,
+      "tempo_medio_s": 0.026624
+    },
+    {
+      "fonte": 2642,
+      "contagens_arcos": {
+        "arvore": 5848,
+        "retorno": 16196,
+        "avanco": 12429,
+        "cruzamento": 1055
+      },
+      "tem_ciclo": true,
+      "tempo_medio_s": 0.020682
+    },
+    {
+      "fonte": 1810,
+      "contagens_arcos": {
+        "arvore": 5848,
+        "retorno": 16112,
+        "avanco": 12468,
+        "cruzamento": 1100
+      },
+      "tem_ciclo": true,
+      "tempo_medio_s": 0.026759
+    }
+  ],
+  "dijkstra_5_pares": [
+    {
+      "origem": 35,
+      "destino": 2642,
+      "custo_transformado": 19.0,
+      "saltos": 6,
+      "caminho": [
+        35,
+        2067,
+        3452,
+        5200,
+        3719,
+        546,
+        2642
+      ],
+      "tempo_medio_s": 0.019317
+    },
+    {
+      "origem": 35,
+      "destino": 1810,
+      "custo_transformado": 11.0,
+      "saltos": 3,
+      "caminho": [
+        35,
+        1916,
+        3744,
+        1810
+      ],
+      "tempo_medio_s": 0.01611
+    },
+    {
+      "origem": 2642,
+      "destino": 2125,
+      "custo_transformado": 11.0,
+      "saltos": 1,
+      "caminho": [
+        2642,
+        2125
+      ],
+      "tempo_medio_s": 0.018295
+    },
+    {
+      "origem": 1810,
+      "destino": 2028,
+      "custo_transformado": 0.0,
+      "saltos": 1,
+      "caminho": [
+        1810,
+        2028
+      ],
+      "tempo_medio_s": 0.021433
+    },
+    {
+      "origem": 2125,
+      "destino": 905,
+      "custo_transformado": 0.0,
+      "saltos": 2,
+      "caminho": [
+        2125,
+        4675,
+        905
+      ],
+      "tempo_medio_s": 0.022771
+    }
+  ],
+  "bellman_ford_casos": {
+    "sem_ciclo_negativo": {
+      "descricao": "Subgrafo dirigido acíclico (u < v) preservando ratings negativos originais",
+      "ordem_V": 5859,
+      "tamanho_E": 18626,
+      "fonte": 1,
+      "tem_ciclo_negativo": false,
+      "qtd_nos_distancia_negativa": 4793,
+      "exemplos_distancias_negativas": {
+        "69": -4.0,
+        "75": -3.0,
+        "81": -2.0,
+        "62": -5.0,
+        "132": -2.0
+      },
+      "tempo_medio_s": 0.026201
+    },
+    "com_ciclo_negativo": {
+      "descricao": "Subgrafo induzido pelos 150 nós mais ativos com ratings originais [-10, +10]",
+      "ordem_V": 150,
+      "tamanho_E": 3739,
+      "fonte": 35,
+      "tem_ciclo_negativo": true,
+      "ciclo_detectado": [
+        2897,
+        2725,
+        2897
+      ],
+      "custo_ciclo": -9.0,
+      "tempo_medio_s": 0.043389
+    }
+  },
+  "escalabilidade_5_execucoes": [
+    {
+      "fracao_nos": 0.1,
+      "ordem_V": 588,
+      "tamanho_E": 3383,
+      "fonte": 7,
+      "repeticoes": 5,
+      "tempo_medio_s": {
+        "BFS": 0.000567,
+        "DFS": 0.001151,
+        "Dijkstra": 0.000879,
+        "Bellman_Ford": 0.192824
+      }
+    },
+    {
+      "fracao_nos": 0.5,
+      "ordem_V": 2939,
+      "tamanho_E": 18863,
+      "fonte": 35,
+      "repeticoes": 5,
+      "tempo_medio_s": {
+        "BFS": 0.003398,
+        "DFS": 0.011424,
+        "Dijkstra": 0.005238,
+        "Bellman_Ford": 6.408555
+      }
+    },
+    {
+      "fracao_nos": 1.0,
+      "ordem_V": 5881,
+      "tamanho_E": 35592,
+      "fonte": 35,
+      "repeticoes": 5,
+      "tempo_medio_s": {
+        "BFS": 0.009407,
+        "DFS": 0.020722,
+        "Dijkstra": 0.01497,
+        "Bellman_Ford": 53.88152
+      }
+    }
+  ]
+}
