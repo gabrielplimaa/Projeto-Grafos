@@ -1,6 +1,6 @@
 """Gera os 7 gráficos da Parte 2 (rede com pesos negativos) usando apenas matplotlib, pandas, numpy e networkx."""
 
-import time
+import json
 from pathlib import Path
 
 import matplotlib
@@ -124,6 +124,7 @@ def _plot_01_distribuicao_ratings(df, pasta_out):
 
 
 def _plot_02_distribuicao_graus_loglog(nos, pasta_out):
+    # [IA] Claude Code – eixos x e y em escala log (gráfico log-log)
     pos_counts = nos.loc[nos["grau_positivo"] > 0, "grau_positivo"].value_counts().sort_index()
     neg_counts = nos.loc[nos["grau_negativo"] > 0, "grau_negativo"].value_counts().sort_index()
 
@@ -146,6 +147,8 @@ def _plot_02_distribuicao_graus_loglog(nos, pasta_out):
         label="Grau Negativo (rating < 0)",
     )
 
+    ax.set_xscale("log")
+    ax.set_yscale("log")
     ax.set_title("Distribuição de Graus Positivos vs. Negativos", fontweight="bold")
     ax.set_xlabel("Grau (k)")
     ax.set_ylabel("Frequência (Nº de Nós)")
@@ -289,55 +292,33 @@ def _plot_06_top_emissores_vs_volume(nos, pasta_out, top_n=15):
     return saida
 
 
-def _plot_07_comparacao_algoritmos_parte2(df, pasta_out, tamanhos=(50, 100, 200, 300, 400)):
-    graus = pd.concat([df["origem"], df["destino"]]).value_counts()
-    total_nos = len(graus)
-    tamanhos_validos = [n for n in tamanhos if n <= total_nos]
-    if not tamanhos_validos:
-        tamanhos_validos = [total_nos]
+def _plot_07_comparacao_algoritmos_parte2(pasta_out, caminho_report=Path("out/parte2/parte2_report.json")):
+    # [IA] Claude Code – plota tempos dos algoritmos do grupo lidos do parte2_report.json
+    with open(caminho_report, encoding="utf-8") as f:
+        report = json.load(f)
+    execucoes = sorted(report["escalabilidade_5_execucoes"], key=lambda e: e["fracao_nos"])
 
-    tempos_bfs, tempos_dij, tempos_bf = [], [], []
-    qtd_nos_real = []
+    rotulos_x = [f"{e['fracao_nos']:.0%}\n(|V| = {e['ordem_V']})" for e in execucoes]
+    x = np.arange(len(execucoes))
 
-    for n in tamanhos_validos:
-        top_nos = set(graus.head(n).index)
-        df_sub = df[df["origem"].isin(top_nos) & df["destino"].isin(top_nos)]
-
-        G = nx.DiGraph()
-        for o, d, w in df_sub.itertuples(index=False):
-            G.add_edge(o, d, weight=float(w))
-
-        origem = max(G.degree, key=lambda item: item[1])[0]
-        qtd_nos_real.append(G.number_of_nodes())
-
-        # BFS (ignora pesos)
-        t0 = time.perf_counter()
-        nx.single_source_shortest_path_length(G, origem)
-        tempos_bfs.append((time.perf_counter() - t0) * 1000.0)
-
-        # Dijkstra (somente arestas positivas)
-        G_pos = nx.DiGraph([(u, v, d) for u, v, d in G.edges(data=True) if d["weight"] >= 0])
-        t0 = time.perf_counter()
-        if origem in G_pos:
-            nx.single_source_dijkstra_path_length(G_pos, origem, weight="weight")
-        tempos_dij.append((time.perf_counter() - t0) * 1000.0)
-
-        # Bellman-Ford (suporta pesos negativos e detecta ciclos negativos)
-        t0 = time.perf_counter()
-        try:
-            nx.single_source_bellman_ford_path_length(G, origem, weight="weight")
-        except nx.NetworkXUnbounded:
-            pass
-        tempos_bf.append((time.perf_counter() - t0) * 1000.0)
+    series = [
+        ("BFS", "BFS — O(V + E)", "o", "#2b6cb0"),
+        ("DFS", "DFS — O(V + E)", "D", "#805ad5"),
+        ("Dijkstra", "Dijkstra — O((V + E) log V)", "s", "#2f855a"),
+        ("Bellman_Ford", "Bellman-Ford — O(V · E)", "^", "#c53030"),
+    ]
 
     fig, ax = plt.subplots(figsize=(9, 5.2))
-    ax.plot(qtd_nos_real, tempos_bfs, marker="o", linewidth=2.2, color="#2b6cb0", label="BFS — O(V + E)")
-    ax.plot(qtd_nos_real, tempos_dij, marker="s", linewidth=2.2, color="#2f855a", label="Dijkstra (só positivos) — O((V + E) log V)")
-    ax.plot(qtd_nos_real, tempos_bf, marker="^", linewidth=2.2, color="#c53030", label="Bellman-Ford (com negativos) — O(V · E)")
+    for chave, rotulo, marcador, cor in series:
+        tempos_ms = [e["tempo_medio_s"][chave] * 1000.0 for e in execucoes]
+        ax.plot(x, tempos_ms, marker=marcador, linewidth=2.2, color=cor, label=rotulo)
 
-    ax.set_title("Escalabilidade dos Algoritmos de Caminho Mínimo — Parte 2", fontweight="bold")
-    ax.set_xlabel("Tamanho do Subgrafo (Nº de Nós)")
-    ax.set_ylabel("Tempo de Execução (ms)")
+    ax.set_yscale("log")
+    ax.set_xticks(x)
+    ax.set_xticklabels(rotulos_x)
+    ax.set_title("Escalabilidade dos Algoritmos do Grupo — Parte 2", fontweight="bold")
+    ax.set_xlabel("Tamanho do subgrafo (fração dos nós do Bitcoin OTC)")
+    ax.set_ylabel("Tempo médio de 5 execuções (ms, escala log)")
     ax.legend()
     _estilizar_eixo(ax)
     plt.tight_layout()
@@ -367,5 +348,5 @@ def gerar_graficos_relatorio(pasta_saida, caminho_dataset=None, repeticoes=3):
         _plot_04_boxplot_outliers_emissao(nos, pasta_out),
         _plot_05_curva_lorenz_gini(nos, pasta_out),
         _plot_06_top_emissores_vs_volume(nos, pasta_out),
-        _plot_07_comparacao_algoritmos_parte2(df, pasta_out),
+        _plot_07_comparacao_algoritmos_parte2(pasta_out),
     ]
