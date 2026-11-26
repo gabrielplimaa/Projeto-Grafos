@@ -332,7 +332,78 @@ def exportar_saidas_caminhos_e_analises(caminhos_mapas: list[Path], pasta_saida:
         writer = csv.writer(f)
         writer.writerow(["mapa", "abordagem", "passos", "caminho_valido", "observacao"])
         writer.writerows(linhas_comparacao)
+# [IA] Claude – revisão e depuração: a função foi escrita pelo grupo. A IA sugeriu usar a
+# custos_acumulados do grupo no lugar de uma função auxiliar que repetia o mesmo cálculo e
+# tirar as checagens de tupla, porque o bellman_ford do grupo sempre devolve um dicionário.
+def exportar_bellman_ford_m05(pasta_saida):
+    """Seção 6: ciclo negativo do m05 no G_pos (+ = -4 fixo) e resposta finita no G_est."""
+    from src.cli import custos_acumulados, estado_final, reconstruir_caminho
 
+    caminho_mapa = Path("data/mapas/m05_bonus.txt")
+    mapa = ler_mapa(str(caminho_mapa))
+    bonus_idx = numerar_bonus(mapa)
+
+    pasta_saida = Path(pasta_saida)
+    pasta_saida.mkdir(parents=True, exist_ok=True)
+
+    def formatar_posicao(posicao):
+        # No G_pos o vértice é só (i, j); o rotulo() espera um estado, então o texto é montado aqui.
+        return f"({posicao[0]},{posicao[1]})"
+
+    # G_pos: o bônus "+" vale -4 toda vez que se entra nele
+    g_pos = construir_grafo_posicoes(mapa)
+    inicio_pos = next(
+        (i, j)
+        for i, linha in enumerate(mapa)
+        for j, celula in enumerate(linha)
+        if celula == "S"
+    )
+    res_pos = bellman_ford(g_pos, inicio_pos)
+
+    if res_pos["tem_ciclo_negativo"]:
+        ciclo_pos = res_pos["ciclo"]
+        dados_pos = {
+            "tem_ciclo_negativo": True,
+            "ciclo": [formatar_posicao(pos) for pos in ciclo_pos],
+            "custo_ciclo": res_pos["custo_ciclo"],
+            "custos_acumulados": custos_acumulados(g_pos, ciclo_pos),
+        }
+    else:
+        dados_pos = {
+            "tem_ciclo_negativo": False,
+            "ciclo": [],
+            "custo_ciclo": None,
+            "custos_acumulados": [],
+        }
+
+    # G_est: cada bônus só vale -4 uma vez, porque o estado guarda os bônus consumidos
+    g_est, inicio = construir_grafo_estados(mapa)
+    res_est = bellman_ford(g_est, inicio)
+
+    dados_est = {
+        "tem_ciclo_negativo": res_est["tem_ciclo_negativo"],
+        "custo": None,
+        "passos": None,
+        "percurso": [],
+        "custos_acumulados": [],
+    }
+    if not res_est["tem_ciclo_negativo"]:
+        destino = estado_final(g_est, mapa, res_est["distancias"])
+        if destino is not None:
+            caminho = reconstruir_caminho(res_est["antecessores"], destino)
+            custos = custos_acumulados(g_est, caminho)
+            dados_est.update({
+                "custo": custos[-1],
+                "passos": len(caminho) - 1,
+                "percurso": [formatar_estado(estado, bonus_idx) for estado in caminho],
+                "custos_acumulados": custos,
+            })
+
+    dados = {"G_pos": dados_pos, "G_est": dados_est}
+    caminho_saida = pasta_saida / "bellman_ford_m05.json"
+    with open(caminho_saida, "w", encoding="utf-8") as f:
+        json.dump(dados, f, indent=4, ensure_ascii=False)
+    return caminho_saida
 
 def gerar_relatorios(pasta_saida="out/parte1") -> None:
     pastas_mapas = [Path("data/mapas"), Path("data/mapas_grupo")]
@@ -400,6 +471,7 @@ def gerar_relatorios(pasta_saida="out/parte1") -> None:
         exportar_arestas_csv(nome_mapa, g_est, bonus_idx, pasta_saida, mapa)
 
     exportar_saidas_caminhos_e_analises(caminhos, pasta_saida)
+    exportar_bellman_ford_m05(pasta_saida)
     with open(pasta_saida / "metricas_global.json", mode="w", encoding="utf-8") as f:
         json.dump(metricas_global_todos, f, indent=4, ensure_ascii=False)
 
