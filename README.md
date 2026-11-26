@@ -106,4 +106,4 @@ A [curva de Lorenz](out/parte2/05_curva_lorenz_gini_emissao.png) mostra a concen
 | `src/parte2/` | Experimentos, análise exploratória e figuras |
 | `out/parte1/` e `out/parte2/` | Resultados publicados |
 | `tests/` | Testes automatizados |
-| `docs/` | [Declaração de uso de IA](docs/DECLARACAO_USO_IA_2026-2.pdf) |
+| `docs/` | [Declaração de uso de IA](docs/DECLARACAO_IA.pdf) |
