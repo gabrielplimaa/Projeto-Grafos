@@ -155,27 +155,18 @@
             "chaves": [
                 "a"
             ],
-            "ordem": 51,
-            "tamanho": 100,
-            "densidade": 0.039216
+            "ordem": 27,
+            "tamanho": 50,
+            "densidade": 0.071225
         },
         "ab": {
             "chaves": [
                 "a",
                 "b"
             ],
-            "ordem": 55,
-            "tamanho": 112,
-            "densidade": 0.03771
-        },
-        "ac": {
-            "chaves": [
-                "a",
-                "c"
-            ],
-            "ordem": 57,
-            "tamanho": 110,
-            "densidade": 0.034461
+            "ordem": 8,
+            "tamanho": 14,
+            "densidade": 0.25
         },
         "abc": {
             "chaves": [
@@ -183,9 +174,9 @@
                 "b",
                 "c"
             ],
-            "ordem": 61,
-            "tamanho": 122,
-            "densidade": 0.033333
+            "ordem": 22,
+            "tamanho": 40,
+            "densidade": 0.08658
         }
     },
     "m02_grupo": {

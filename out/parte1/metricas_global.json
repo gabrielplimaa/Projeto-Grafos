@@ -1808,19 +1808,19 @@
     },
     "m01_grupo": {
         "G_pos": {
-            "ordem": 32,
-            "tamanho": 64,
-            "densidade": 0.064516
+            "ordem": 40,
+            "tamanho": 75,
+            "densidade": 0.048077
         },
         "G_est": {
-            "ordem": 226,
-            "tamanho": 455,
-            "densidade": 0.008948
+            "ordem": 59,
+            "tamanho": 109,
+            "densidade": 0.031853
         },
-        "teto_teorico": 512,
-        "taxa_ocupacao": 0.441406,
+        "teto_teorico": 640,
+        "taxa_ocupacao": 0.092188,
         "arcos_entre_camadas": {
-            "quantidade_arcos": 9,
+            "quantidade_arcos": 3,
             "casas_geradoras": [
                 {
                     "linha": 1,
@@ -1833,25 +1833,25 @@
                     "simbolo": "b"
                 },
                 {
-                    "linha": 3,
-                    "coluna": 9,
+                    "linha": 5,
+                    "coluna": 3,
                     "simbolo": "c"
                 }
             ]
         },
         "graus_e_rankings": {
             "maior_grau_saida": {
-                "estado": "(3,3)|abc|{0}",
-                "grau": 4
+                "estado": "(1,7)|a|{0}",
+                "grau": 3
             },
             "maior_grau_entrada": {
-                "estado": "(1,7)|abc|{0}",
-                "grau": 5
+                "estado": "(1,3)|a|{}",
+                "grau": 3
             },
             "becos": [],
             "multiplicidade": {
-                "maxima": 9,
-                "qtd_casas_com_maxima": 2,
+                "maxima": 3,
+                "qtd_casas_com_maxima": 6,
                 "casas_com_maxima": [
                     {
                         "linha": 1,
@@ -1862,6 +1862,26 @@
                         "linha": 1,
                         "coluna": 2,
                         "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 2,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 3,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 4,
+                        "simbolo": "."
+                    },
+                    {
+                        "linha": 3,
+                        "coluna": 5,
+                        "simbolo": "<"
                     }
                 ]
             }
