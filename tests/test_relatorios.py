@@ -1,15 +1,16 @@
+# [IA] Claude – depuração: o teste passou a gravar numa pasta temporária (tmp_path do pytest),
+# para rodar o pytest não sobrescrever out/parte1/. As verificações são as que o grupo já tinha.
 import csv
 import json
-from pathlib import Path
 from src.graphs.main import gerar_relatorios
 
 
-def test_saidas():
-    pasta_saida = Path("out/parte1")
+def test_saidas(tmp_path):
+    pasta_saida = tmp_path
     arq_global = pasta_saida / "metricas_global.json"
     arq_camadas = pasta_saida / "camadas.json"
 
-    gerar_relatorios()
+    gerar_relatorios(pasta_saida)
 
     assert arq_global.exists()
     assert arq_camadas.exists()
