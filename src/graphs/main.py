@@ -269,8 +269,8 @@ def exportar_saidas_caminhos_e_analises(caminhos_mapas: list[Path], pasta_saida:
             c_dfs["retorno"],
             c_dfs["avanco"],
             c_dfs["cruzamento"],
+            res_dfs["tem_ciclo"],
         ])
-
         # --- 3. ARMADILHAS (m04 e m07) ---
         if nome_mapa in ("m04_esteiras", "m07_impossivel"):
             armadilhas = estados_armadilha(g_est, inicio)
@@ -325,7 +325,7 @@ def exportar_saidas_caminhos_e_analises(caminhos_mapas: list[Path], pasta_saida:
 
     with open(pasta_saida / "dfs_classificacao.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["mapa", "arvore", "retorno", "avanco", "cruzamento"])
+        writer.writerow(["mapa", "arvore", "retorno", "avanco", "cruzamento", "tem_ciclo"])
         writer.writerows(linhas_dfs)
 
     with open(pasta_saida / "comparacao_modelagem.csv", "w", newline="", encoding="utf-8") as f:
